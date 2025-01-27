@@ -1,9 +1,64 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
+from tkinter import Tk, Canvas, Button, filedialog, StringVar, DoubleVar, IntVar, OptionMenu, Scale, Label, Entry
+from PIL import Image, ImageTk
 
+# Глобальные переменные для изображений
+original_image = None
+noisy_image = None
+filtered_image = None
+restored_image = None
 
-def add_noise(image, noise_type="points", noise_level=0.05):
+def resize_to_fit(image, width, height):
+    """Изменение размера изображения под размеры Canvas."""
+    h, w = image.shape[:2]
+    scale = min(width / w, height / h)
+    new_w = int(w * scale)
+    new_h = int(h * scale)
+    return cv2.resize(image, (new_w, new_h))
+
+def open_image():
+    """Открытие изображения и отображение в первом Canvas."""
+    global original_image, tk_original_image
+    file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.bmp")])
+    if not file_path:
+        return
+
+    image = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+    if image is None:
+        print("Ошибка: не удалось загрузить изображение. Проверьте формат файла.")
+        return
+
+    original_image = image  # Сохраняем оригинал
+    resized_image = resize_to_fit(image, canvas_width, canvas_height)
+
+    img = Image.fromarray(resized_image)
+    tk_original_image = ImageTk.PhotoImage(img)
+
+    original_canvas.create_image(0, 0, anchor="nw", image=tk_original_image)
+    original_canvas.image = tk_original_image
+
+def add_noise():
+    """Добавление шума к изображению и отображение во втором Canvas."""
+    global noisy_image, tk_noisy_image
+
+    if original_image is None:
+        print("Сначала загрузите изображение!")
+        return
+
+    noise_type = noise_type_var.get()
+    noise_level = noise_level_var.get()
+
+    noisy_image = add_noise_to_image(original_image, noise_type, noise_level)
+
+    resized_noisy_image = resize_to_fit(noisy_image, canvas_width, canvas_height)
+    tk_noisy_image = ImageTk.PhotoImage(Image.fromarray(resized_noisy_image))
+
+    noisy_canvas.create_image(0, 0, anchor="nw", image=tk_noisy_image)
+    noisy_canvas.image = tk_noisy_image
+
+def add_noise_to_image(image, noise_type="points", noise_level=0.05):
+    """Добавление заданного типа шума."""
     noisy_image = image.copy()
     h, w = image.shape[:2]
     num_noise = int(noise_level * h * w)
@@ -14,8 +69,28 @@ def add_noise(image, noise_type="points", noise_level=0.05):
             noisy_image[y, x] = np.random.choice([0, 255])
     return noisy_image
 
+def apply_filter():
+    """Применение фильтра к изображению и отображение в третьем Canvas."""
+    global filtered_image, tk_filtered_image
+
+    if noisy_image is None:
+        print("Сначала добавьте шум к изображению!")
+        return
+
+    window_size = filter_window_var.get()
+    center_x = filter_center_x_var.get()
+    center_y = filter_center_y_var.get()
+
+    filtered_image = cross_median_filter(noisy_image, window_size, (center_y, center_x))
+
+    resized_filtered_image = resize_to_fit(filtered_image, canvas_width, canvas_height)
+    tk_filtered_image = ImageTk.PhotoImage(Image.fromarray(resized_filtered_image))
+
+    filtered_canvas.create_image(0, 0, anchor="nw", image=tk_filtered_image)
+    filtered_canvas.image = tk_filtered_image
 
 def cross_median_filter(image, window_size=3, center=(1, 1)):
+    """Крестообразный медианный фильтр."""
     padded_image = cv2.copyMakeBorder(image, window_size // 2, window_size // 2, window_size // 2, window_size // 2,
                                       cv2.BORDER_REFLECT)
     filtered_image = np.zeros_like(image)
@@ -38,43 +113,73 @@ def cross_median_filter(image, window_size=3, center=(1, 1)):
 
     return filtered_image
 
+def restore_image():
+    """Восстановление изображения и отображение результата в третьем Canvas."""
+    global restored_image, tk_filtered_image
 
-def main():
-    file_path = input("Введите путь к изображению: ")
-    image = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
-    if image is None:
-        print("Ошибка: не удалось загрузить изображение.")
+    if noisy_image is None:
+        print("Сначала добавьте шум к изображению!")
         return
 
-    noise_type = input("Тип шума (points/...): ").strip().lower()
-    noise_level = float(input("Уровень шума (0-1): "))
-    window_size = int(input("Размер окна фильтрации (нечетное число): "))
-    center_x = int(input("Смещение центра по x: "))
-    center_y = int(input("Смещение центра по y: "))
+    restored_image = original_image.copy()
 
-    noisy_image = add_noise(image, noise_type=noise_type, noise_level=noise_level)
+    resized_restored_image = resize_to_fit(restored_image, canvas_width, canvas_height)
+    tk_filtered_image = ImageTk.PhotoImage(Image.fromarray(resized_restored_image))
 
-    filtered_image = cross_median_filter(noisy_image, window_size=window_size, center=(center_y, center_x))
+    filtered_canvas.create_image(0, 0, anchor="nw", image=tk_filtered_image)
+    filtered_canvas.image = tk_filtered_image
 
-    plt.figure(figsize=(12, 6))
-    plt.subplot(1, 3, 1)
-    plt.title("Исходное изображение")
-    plt.imshow(image, cmap="gray")
-    plt.axis("off")
+# Создание окна Tkinter
+root = Tk()
+root.title("Обработка изображений")
 
-    plt.subplot(1, 3, 2)
-    plt.title("Зашумленное изображение")
-    plt.imshow(noisy_image, cmap="gray")
-    plt.axis("off")
+canvas_width = 300
+canvas_height = 300
 
-    plt.subplot(1, 3, 3)
-    plt.title("Отфильтрованное изображение")
-    plt.imshow(filtered_image, cmap="gray")
-    plt.axis("off")
+# Canvas для оригинального изображения
+original_canvas = Canvas(root, width=canvas_width, height=canvas_height, bg="white")
+original_canvas.grid(row=0, column=0, padx=10, pady=10)
+original_canvas.create_text(150, 150, text="Оригинал", fill="gray")
 
-    plt.tight_layout()
-    plt.show()
+# Canvas для изображения с шумом
+noisy_canvas = Canvas(root, width=canvas_width, height=canvas_height, bg="white")
+noisy_canvas.grid(row=0, column=1, padx=10, pady=10)
+noisy_canvas.create_text(150, 150, text="Шум", fill="gray")
 
+# Canvas для отфильтрованного изображения
+filtered_canvas = Canvas(root, width=canvas_width, height=canvas_height, bg="white")
+filtered_canvas.grid(row=0, column=2, padx=10, pady=10)
+filtered_canvas.create_text(150, 150, text="Фильтр/Восстановление", fill="gray")
 
-if __name__ == "__main__":
-    main()
+# Выпадающее меню для выбора типа шума
+noise_type_var = StringVar(value="points")
+Label(root, text="Тип шума").grid(row=1, column=0, pady=5)
+OptionMenu(root, noise_type_var, "points").grid(row=1, column=1, pady=5)
+
+# Ползунок для уровня шума
+noise_level_var = DoubleVar(value=0.05)
+Label(root, text="Уровень шума").grid(row=2, column=0, pady=5)
+Scale(root, from_=0, to=1, resolution=0.01, orient="horizontal", variable=noise_level_var).grid(row=2, column=1, pady=5)
+
+# Параметры фильтра
+filter_window_var = IntVar(value=3)
+filter_center_x_var = IntVar(value=1)
+filter_center_y_var = IntVar(value=1)
+
+Label(root, text="Размер окна").grid(row=3, column=0, pady=5)
+Entry(root, textvariable=filter_window_var).grid(row=3, column=1, pady=5)
+
+Label(root, text="Центр X").grid(row=4, column=0, pady=5)
+Entry(root, textvariable=filter_center_x_var).grid(row=4, column=1, pady=5)
+
+Label(root, text="Центр Y").grid(row=5, column=0, pady=5)
+Entry(root, textvariable=filter_center_y_var).grid(row=5, column=1, pady=5)
+
+# Кнопки управления
+Button(root, text="Загрузить изображение", command=open_image).grid(row=6, column=0, pady=10)
+Button(root, text="Добавить шум", command=add_noise).grid(row=6, column=1, pady=10)
+Button(root, text="Применить фильтр", command=apply_filter).grid(row=6, column=2, pady=10)
+Button(root, text="Восстановить изображение", command=restore_image).grid(row=7, column=2, pady=10)
+
+# Запуск приложения
+root.mainloop()
