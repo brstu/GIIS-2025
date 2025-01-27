@@ -1,23 +1,17 @@
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
-from tkinter import Tk, simpledialog, Button, Label, OptionMenu, StringVar, Entry
+from tkinter import Tk, Button, Label, OptionMenu, StringVar, Entry
 from PIL import Image, ImageTk
 import tkinter.filedialog as fd
-import random
-
 
 def add_salt_and_pepper_noise(image, noise_level=0.02, method='random'):
-    """
-    Добавляет шум "соль и перец" в изображение.
-    Доступные методы: 'random' (случайное распределение), 'grid' (шахматный порядок), 'diagonal' (диагональный узор).
-    """
     noisy_image = image.copy()
     total_pixels = image.shape[0] * image.shape[1]
     num_noise = int(total_pixels * noise_level)
 
     if method == 'random':
-        indices = random.sample(range(total_pixels), num_noise)
+        indices = np.random.choice(total_pixels, num_noise, replace=False)
     elif method == 'grid':
         indices = np.arange(0, total_pixels, max(1, total_pixels // num_noise))
     elif method == 'diagonal':
@@ -34,34 +28,22 @@ def add_salt_and_pepper_noise(image, noise_level=0.02, method='random'):
 
     return noisy_image
 
-
 def median_filter_1D(image, kernel_size, axis):
-    if axis == 0:  # Фильтр по строкам
+    if axis == 0:
         return cv2.medianBlur(image, kernel_size)
-    elif axis == 1:  # Фильтр по столбцам
+    elif axis == 1:
         return cv2.medianBlur(image.T, kernel_size).T
 
-
 def median_filter_combined(image, kernel_size):
-    """
-    Применяет медианный фильтр сначала по строкам, затем по столбцам.
-    """
     filtered_rows = median_filter_1D(image, kernel_size, axis=0)
     filtered_cols = median_filter_1D(filtered_rows, kernel_size, axis=1)
     return filtered_cols
 
-
 def process_image(image, noise_level=0.02, kernel_size=3, noise_method='random'):
     noisy_image = add_salt_and_pepper_noise(image, noise_level, method=noise_method)
-
-    if len(image.shape) == 3:
-        filtered_image_rows = median_filter_1D(noisy_image, kernel_size, axis=0)
-        filtered_image_cols = median_filter_1D(noisy_image, kernel_size, axis=1)
-        filtered_image_combined = median_filter_combined(noisy_image, kernel_size)
-    else:
-        filtered_image_rows = median_filter_1D(noisy_image, kernel_size, axis=0)
-        filtered_image_cols = median_filter_1D(noisy_image, kernel_size, axis=1)
-        filtered_image_combined = median_filter_combined(noisy_image, kernel_size)
+    filtered_image_rows = median_filter_1D(noisy_image, kernel_size, axis=0)
+    filtered_image_cols = median_filter_1D(noisy_image, kernel_size, axis=1)
+    filtered_image_combined = median_filter_combined(noisy_image, kernel_size)
 
     fig, axs = plt.subplots(1, 4, figsize=(20, 5))
     axs[0].imshow(image)
@@ -79,10 +61,8 @@ def process_image(image, noise_level=0.02, kernel_size=3, noise_method='random')
     plt.axis("off")
     plt.show()
 
-
 def open_image_and_process(noise_level, noise_method):
-    image_path = fd.askopenfilename(title="Выберите изображение",
-                                    filetypes=[("Image Files", "*.jpg;*.jpeg;*.png;*.bmp;*.tif")])
+    image_path = fd.askopenfilename(title="Выберите изображение", filetypes=[("Image Files", "*.jpg;*.jpeg;*.png;*.bmp;*.tif")])
     if image_path:
         try:
             with Image.open(image_path) as img:
@@ -91,24 +71,20 @@ def open_image_and_process(noise_level, noise_method):
         except Exception as e:
             print(f"Ошибка загрузки изображения: {e}")
 
-
 def create_gui():
     root = Tk()
     root.title("Настройки шума и обработки изображения")
 
-    # Создание метки и поля для ввода уровня шума
     Label(root, text="Уровень шума (0-1):").grid(row=0, column=0)
     noise_level_var = StringVar(value="0.05")
     noise_level_entry = Entry(root, textvariable=noise_level_var)
     noise_level_entry.grid(row=0, column=1)
 
-    # Создание метки и выпадающего списка для выбора метода шума
     Label(root, text="Метод шума:").grid(row=1, column=0)
     noise_method_var = StringVar(value="random")
     noise_method_menu = OptionMenu(root, noise_method_var, "random", "grid", "diagonal")
     noise_method_menu.grid(row=1, column=1)
 
-    # Кнопка для открытия изображения и обработки
     def on_process_image():
         noise_level = float(noise_level_var.get())
         noise_method = noise_method_var.get()
@@ -118,7 +94,6 @@ def create_gui():
     process_button.grid(row=2, column=0, columnspan=2)
 
     root.mainloop()
-
 
 if __name__ == "__main__":
     create_gui()
