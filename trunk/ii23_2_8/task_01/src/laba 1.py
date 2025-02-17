@@ -105,8 +105,7 @@ class ImageProcessorApp:
         self.processed_image = None
 
     def load_image(self):
-        file_path = filedialog.askopenfilename(initialdir="./assets",
-                                               filetypes=[("Image files", "*.png;*.jpg;*.jpeg;*.gif;*.bmp")])
+        file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png;*.jpg;*.jpeg;*.gif;*.bmp")])
         if file_path:
             self.original_image = cv2.resize(cv2.imread(file_path), (500, 500))
             self.processed_image = deepcopy(self.original_image)
