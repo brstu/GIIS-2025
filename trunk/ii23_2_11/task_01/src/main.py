@@ -4,6 +4,7 @@ import random
 import tkinter as tk
 from tkinter import filedialog, ttk
 from PIL import Image, ImageTk
+import secrets
 
 
 def add_impulse_noise(image, noise_level=0.02, noise_type='points'):
@@ -13,12 +14,12 @@ def add_impulse_noise(image, noise_level=0.02, noise_type='points'):
 
     if noise_type == 'points':
         for _ in range(num_noise):
-            x, y = random.randint(0, w - 1), random.randint(0, h - 1)
-            noisy_image[y, x] = 255 if random.random() > 0.5 else 0
+            x, y = secrets.randbelow(w), secrets.randbelow(h)
+            noisy_image[y, x] = 255 if secrets.randbelow(2) else 0
     elif noise_type == 'lines':
         for _ in range(int(num_noise / 50)):
-            x1, y1, x2, y2 = [random.randint(0, dim - 1) for dim in [w, h, w, h]]
-            cv2.line(noisy_image, (x1, y1), (x2, y2), 255 if random.random() > 0.5 else 0, 1)
+            x1, y1, x2, y2 = [secrets.randbelow(dim) for dim in [w, h, w, h]]
+            cv2.line(noisy_image, (x1, y1), (x2, y2), 255 if secrets.randbelow(2) else 0, 1)
 
     return noisy_image
 
