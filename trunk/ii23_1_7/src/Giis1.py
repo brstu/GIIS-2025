@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import random
+import secrets
 import matplotlib.pyplot as plt
 import tkinter as tk
 from tkinter import filedialog, simpledialog
@@ -16,12 +16,12 @@ def add_noise(image, noise_level=0.05, noise_type='points'):
 
     if noise_type == 'points':
         for _ in range(num_pixels):
-            x, y = random.randint(0, w - 1), random.randint(0, h - 1)
-            noisy_img[y, x] = [255, 255, 255] if random.random() > 0.5 else [0, 0, 0]
+            x, y = secrets.randbelow(w), secrets.randbelow(h)
+            noisy_img[y, x] = [255, 255, 255] if secrets.randbits(1) else [0, 0, 0]
     elif noise_type == 'lines':
         for _ in range(int(num_pixels / 100)):
-            x1, y1 = random.randint(0, w - 1), random.randint(0, h - 1)
-            x2, y2 = random.randint(0, w - 1), random.randint(0, h - 1)
+            x1, y1 = secrets.randbelow(w), secrets.randbelow(h)
+            x2, y2 = secrets.randbelow(w), secrets.randbelow(h)
             cv2.line(noisy_img, (x1, y1), (x2, y2), (255, 255, 255), 1)
     return noisy_img
 
