@@ -33,46 +33,40 @@
 
  
 ## Результаты работы
-
-Интерфейс
-![image](https://github.com/user-attachments/assets/5c26a76d-5b24-4abd-9800-9a0ce8f4aa33)
-
  
 1. Интерфейс пользователя:
     - Возможность загрузки файлов данных (например, CSV, Excel).✅
-   ![](1.png)
-   ![](11.png)
+   ![image](https://github.com/user-attachments/assets/0e15f1fe-8391-4143-b64b-f809646addb9)
     - Меню для выбора типов визуализации (линейные графики, гистограммы, диаграммы рассеяния и т.д.).✅
-   ![](12.png)
+   ![image](https://github.com/user-attachments/assets/37433039-e3db-4ffa-9f82-a49bfee52b7f)
     - Интерактивные элементы управления (фильтры, ползунки, выпадающие списки и т.д.) для изменения параметров визуализации.✅
-   ![](13.png)
+   ![image](https://github.com/user-attachments/assets/59307446-b1dc-409d-a2b2-16c4684b5322)
+   ![image](https://github.com/user-attachments/assets/62bf9354-df71-40da-aa99-cc42f9d45b02)
+
+
 2. Обработка данных:
     - Импорт данных из загруженных файлов + визуализация данных в форме таблицы.✅
-   ![](21.png)
     - Обработка и очистка данных (например, устранение пропущенных значений, нормализация).✅
-   ![](22.png)
-   ![](222.png)
-    - Возможность группировки и агрегирования данных.✅
-   ![](23.png)
+   ![image](https://github.com/user-attachments/assets/5c26a76d-5b24-4abd-9800-9a0ce8f4aa33)
 3. Алгоритмы визуализации:
     - Реализация различных типов визуализаций (линейные графики, гистограммы, диаграммы рассеяния, круговые диаграммы и т.д.).✅
-   ![](31.png)
-   ![](32.png)
-   ![](33.png)
-   ![](34.png)
+   ![image](https://github.com/user-attachments/assets/8a86c2f7-df15-473f-b358-8a6d93ec356e)
+![image](https://github.com/user-attachments/assets/482c2b40-e751-4c11-b44d-1755da566a40)
+![image](https://github.com/user-attachments/assets/92bb30f9-2f2c-4dcb-85c3-f50c6ef166a1)
+![image](https://github.com/user-attachments/assets/8acb5c8f-12c1-4073-bc8a-ee309c808716)
+
     - Возможность динамического обновления визуализаций при изменении параметров.✅
    ![](331.png)
    ![](332.png)
    ![](333.png)
-    - Интерактивные графики (увеличение, уменьшение, выделение отдельных элементов).✅
-   ![](3331.png)
-   ![](3332.png)
-   ![](3333.png)
+    - Интерактивные графики.✅
+      ![image](https://github.com/user-attachments/assets/62bf9354-df71-40da-aa99-cc42f9d45b02)
 4. Функциональные возможности:
-    - Возможность экспорта визуализаций в виде изображений (PNG, JPEG) или PDF.✅
-   ![](41.png)
-   ![](42.png)
+    - Возможность экспорта визуализаций в виде изображений.✅
+   ![image](https://github.com/user-attachments/assets/0b03a76a-c061-4561-b961-a25d04af3241)
+
     - Встроенные пояснения и подсказки для пользователей.✅
-   ![](441.png)
+   ![image](https://github.com/user-attachments/assets/57f72b0c-4c12-44be-a6cd-53e2f4e683f4)
+
  
 
