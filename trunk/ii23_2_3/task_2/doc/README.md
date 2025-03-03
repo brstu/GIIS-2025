@@ -55,11 +55,8 @@
 ![image](https://github.com/user-attachments/assets/92bb30f9-2f2c-4dcb-85c3-f50c6ef166a1)
 ![image](https://github.com/user-attachments/assets/8acb5c8f-12c1-4073-bc8a-ee309c808716)
 
-    - Возможность динамического обновления визуализаций при изменении параметров.✅
-   ![](331.png)
-   ![](332.png)
-   ![](333.png)
     - Интерактивные графики.✅
+      
       ![image](https://github.com/user-attachments/assets/62bf9354-df71-40da-aa99-cc42f9d45b02)
 4. Функциональные возможности:
     - Возможность экспорта визуализаций в виде изображений.✅
