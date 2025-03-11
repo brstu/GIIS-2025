@@ -1,0 +1,29 @@
+ID,Brand,Device,Model,Country of Origin,Date of Release,Price (USD)
+1,Apple,iPhone,13 Pro Max,United States,24.09.2021,1099
+2,Samsung,Galaxy,S21 Ultra,South Korea,29.01.2021,1199
+3,Google,Pixel,6 Pro,United States,19.10.2021,899
+4,Sony,PlayStation,5,Japan,12.11.2020,499
+5,Microsoft Surface,Laptop,4,United States,15.04.2021,999
+6,Dell,XPS,13,United States,28.01.2021,999
+7,HP,Spectre,x360,United States,16.04.2021,1349
+8,Lenovo,ThinkPad,X1 Carbon,China,15.02.2021,1429
+9,Asus,ROG,Zephyrus G14,Taiwan,15.03.2021,1499
+10,Acer,Predator,Helios 300,Taiwan,17.02.2021,1299
+11,Apple,MacBook,Pro 14-inch,United States,26.10.2021,1999
+12,Samsung,Odyssey,G9,South Korea,22.07.2020,1699
+13,Google,Pixelbook,Go,United States,17.06.2021,649
+14,Sony,Xperia,1 III,Japan,19.08.2021,1299
+15,Microsoft,Xbox,Series X,United States,10.11.2020,499
+16,HP,Pavilion,x360,United States,14.05.2021,749
+17,Lenovo,IdeaPad,5 Pro,China,10.03.2021,999
+18,Acer,Swift,3,Taiwan,10.02.2021,699
+19,Apple,iPad,Pro 12.9-inch,United States,21.05.2021,1099
+20,Samsung,Galaxy,Tab S7+,South Korea,21.08.2020,849
+21,Google,Nest,Hub Max,United States,30.03.2021,229
+22,Sony,WH,1000XM4,Malaysia,06.08.2020,349
+23,Microsoft,Surface,Pro 8,United States,05.10.2021,899
+24,Dell,UltraSharp,U2720Q,China,25.12.2020,499
+25,HP,Elite,Dragonfly,United States,28.06.2021,1799
+26,Lenovo,Legion,7i,China,05.04.2021,1499
+27,Asus,TUF,Gaming A15,Taiwan,20.03.2021,1199
+28,Acer,Aspire,5,Taiwan,30.01.2021,599
