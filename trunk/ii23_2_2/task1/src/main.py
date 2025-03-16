@@ -1,99 +1,99 @@
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
-from tkinter import Tk, Button, Label, OptionMenu, StringVar, Entry
+import matplotlib.pyplot as plt
+import tkinter as tk
+from tkinter import filedialog
 from PIL import Image, ImageTk
-import tkinter.filedialog as fd
 
-def add_salt_and_pepper_noise(image, noise_level=0.02, method='random'):
-    noisy_image = image.copy()
-    total_pixels = image.shape[0] * image.shape[1]
-    num_noise = int(total_pixels * noise_level)
-
-    if method == 'random':
-        indices = np.random.choice(total_pixels, num_noise, replace=False)
-    elif method == 'grid':
-        indices = np.arange(0, total_pixels, max(1, total_pixels // num_noise))
-    elif method == 'diagonal':
-        indices = [(i * image.shape[1] + i) % total_pixels for i in range(num_noise)]
-    else:
-        raise ValueError("Неподдерживаемый метод зашумления")
-
-    for index in indices:
-        y, x = divmod(index, image.shape[1])
-        if len(image.shape) == 3:
-            noisy_image[y, x] = [255, 255, 255] if (x + y) % 2 == 0 else [0, 0, 0]
+def generate_noise(img, level=0.02, pattern='random'):
+    output = img.copy()
+    total_pixels = img.shape[0] * img.shape[1]
+    num_noisy = int(total_pixels * level)
+    
+    noise_indices = {
+        'random': np.random.choice(total_pixels, num_noisy, replace=False),
+        'grid': np.linspace(0, total_pixels - 1, num_noisy, dtype=int),
+        'diagonal': [(i * img.shape[1] + i) % total_pixels for i in range(num_noisy)]
+    }.get(pattern, [])
+    
+    if noise_indices is None or len(noise_indices) == 0:
+        raise ValueError("Invalid noise pattern")
+    
+    for idx in noise_indices:
+        y, x = divmod(idx, img.shape[1])
+        if len(img.shape) == 3:
+            output[y, x] = [255, 255, 255] if (y + x) % 2 == 0 else [0, 0, 0]
         else:
-            noisy_image[y, x] = 255 if (x + y) % 2 == 0 else 0
+            output[y, x] = 255 if (y + x) % 2 == 0 else 0
+    
+    return output
 
-    return noisy_image
+def apply_median_blur(image, k_size, transpose=False):
+    return cv2.medianBlur(image.T if transpose else image, k_size).T if transpose else cv2.medianBlur(image, k_size)
 
-def median_filter_1D(image, kernel_size, axis):
-    if axis == 0:
-        return cv2.medianBlur(image, kernel_size)
-    elif axis == 1:
-        return cv2.medianBlur(image.T, kernel_size).T
+def filter_image(img_data, kernel_size):
+    step1 = apply_median_blur(img_data, kernel_size)
+    return apply_median_blur(step1, kernel_size, transpose=True)
 
-def median_filter_combined(image, kernel_size):
-    filtered_rows = median_filter_1D(image, kernel_size, axis=0)
-    filtered_cols = median_filter_1D(filtered_rows, kernel_size, axis=1)
-    return filtered_cols
-
-def process_image(image, noise_level=0.02, kernel_size=3, noise_method='random'):
-    noisy_image = add_salt_and_pepper_noise(image, noise_level, method=noise_method)
-    filtered_image_rows = median_filter_1D(noisy_image, kernel_size, axis=0)
-    filtered_image_cols = median_filter_1D(noisy_image, kernel_size, axis=1)
-    filtered_image_combined = median_filter_combined(noisy_image, kernel_size)
-
-    fig, axs = plt.subplots(1, 4, figsize=(20, 5))
-    axs[0].imshow(image)
-    axs[0].set_title("Исходное изображение")
-    axs[1].imshow(noisy_image)
-    axs[1].set_title(f"Зашумленное изображение ({noise_method})")
-    axs[2].imshow(filtered_image_rows)
-    axs[2].set_title("Фильтр по строкам")
-    axs[3].imshow(filtered_image_cols)
-    axs[3].set_title("Фильтр по столбцам")
-
+def visualize_results(original, noisy, filtered_x, filtered_y, combined):
+    fig, axes = plt.subplots(1, 4, figsize=(20, 5))
+    titles = ["Original", "Noisy", "Filtered (X)", "Filtered (Y)"]
+    images = [original, noisy, filtered_x, filtered_y]
+    
+    for ax, img, title in zip(axes, images, titles):
+        ax.imshow(img, cmap='gray' if len(img.shape) == 2 else None)
+        ax.set_title(title)
+    
     plt.figure(figsize=(5, 5))
-    plt.imshow(filtered_image_combined)
-    plt.title("Фильтр по строкам и столбцам")
+    plt.imshow(combined, cmap='gray' if len(combined.shape) == 2 else None)
+    plt.title("Fully Filtered")
     plt.axis("off")
     plt.show()
 
-def open_image_and_process(noise_level, noise_method):
-    image_path = fd.askopenfilename(title="Выберите изображение", filetypes=[("Image Files", "*.jpg;*.jpeg;*.png;*.bmp;*.tif")])
-    if image_path:
-        try:
-            with Image.open(image_path) as img:
-                image = np.array(img)
-                process_image(image, noise_level=noise_level, kernel_size=5, noise_method=noise_method)
-        except Exception as e:
-            print(f"Ошибка загрузки изображения: {e}")
+def process_image(img_array, noise_intensity=0.02, filter_size=3, noise_mode='random'):
+    if img_array is None or img_array.size == 0:
+        print("Invalid image data")
+        return
+    
+    noisy_img = generate_noise(img_array, noise_intensity, pattern=noise_mode)
+    filtered_x = apply_median_blur(noisy_img, filter_size)
+    filtered_y = apply_median_blur(noisy_img, filter_size, transpose=True)
+    final_result = filter_image(noisy_img, filter_size)
+    visualize_results(img_array, noisy_img, filtered_x, filtered_y, final_result)
 
-def create_gui():
-    root = Tk()
-    root.title("Настройки шума и обработки изображения")
+def select_image():
+    file_path = filedialog.askopenfilename(title="Choose an Image", filetypes=[("Image Files", "*.jpg;*.jpeg;*.png;*.bmp;*.tif")])
+    if not file_path:
+        return
+    
+    try:
+        with Image.open(file_path) as img:
+            img = img.convert('RGB')
+            img_arr = np.array(img)
+            if img_arr is None or img_arr.size == 0:
+                print("Error: Loaded image is empty or invalid.")
+                return
+            process_image(img_arr, noise_intensity=0.05, filter_size=5, noise_mode='random')
+    except Exception as e:
+        print(f"Error loading image: {e}")
 
-    Label(root, text="Уровень шума (0-1):").grid(row=0, column=0)
-    noise_level_var = StringVar(value="0.05")
-    noise_level_entry = Entry(root, textvariable=noise_level_var)
-    noise_level_entry.grid(row=0, column=1)
-
-    Label(root, text="Метод шума:").grid(row=1, column=0)
-    noise_method_var = StringVar(value="random")
-    noise_method_menu = OptionMenu(root, noise_method_var, "random", "grid", "diagonal")
-    noise_method_menu.grid(row=1, column=1)
-
-    def on_process_image():
-        noise_level = float(noise_level_var.get())
-        noise_method = noise_method_var.get()
-        open_image_and_process(noise_level, noise_method)
-
-    process_button = Button(root, text="Загрузить изображение и обработать", command=on_process_image)
-    process_button.grid(row=2, column=0, columnspan=2)
-
+def create_ui():
+    root = tk.Tk()
+    root.title("Noise & Filtering")
+    
+    tk.Label(root, text="Noise Level (0-1):").grid(row=0, column=0)
+    noise_lvl_var = tk.StringVar(value="0.05")
+    tk.Entry(root, textvariable=noise_lvl_var).grid(row=0, column=1)
+    
+    tk.Label(root, text="Noise Type:").grid(row=1, column=0)
+    noise_type_var = tk.StringVar(value="random")
+    tk.OptionMenu(root, noise_type_var, "random", "grid", "diagonal").grid(row=1, column=1)
+    
+    def process():
+        select_image()
+    
+    tk.Button(root, text="Load & Process Image", command=process).grid(row=2, column=0, columnspan=2)
     root.mainloop()
 
 if __name__ == "__main__":
-    create_gui()
+    create_ui()
