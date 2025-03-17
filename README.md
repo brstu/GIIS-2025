@@ -6,8 +6,8 @@
 
 |№ лабораторной|максимальное количетсов баллов за нее|
 |---|---|
-|1|$${\color{red}3}$$|
-|2|$${\color{lightgreen}5}$$|
+|1|2|
+|2|$${\color{lightblue}4}$$|
 |3|$${\color{lightgreen}5}$$|
 |4|$${\color{lightgreen}5}$$|
 |5|$${\color{lightgreen}5}$$|
