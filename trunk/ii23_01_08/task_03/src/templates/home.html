@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+<div class="hero-section text-center">
+    <h1 class="display-4">Сайт рецептов</h1>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" name="ingredient" placeholder="Искать по ингредиенту...">
+            <button class="btn btn-outline-success" type="submit">Найти</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <select class="form-select" onchange="window.location.href='?difficulty='+this.value">
+            <option value="">Все уровни сложности</option>
+            <option value="Легкая" {% if request.args.get('difficulty') == 'Легкая' %}selected{% endif %}>Легкая</option>
+            <option value="Средняя" {% if request.args.get('difficulty') == 'Средняя' %}selected{% endif %}>Средняя</option>
+            <option value="Сложная" {% if request.args.get('difficulty') == 'Сложная' %}selected{% endif %}>Сложная</option>
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    {% for recipe in recipes %}
+    <div class="col-md-4 mb-4">
+        <div class="card recipe-card h-100">
+            <img src="{{ recipe.image }}" class="card-img-top" alt="{{ recipe.title }}" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">{{ recipe.title }}</h5>
+                <p class="card-text">
+                    <small class="text-muted">Сложность: {{ recipe.difficulty }}</small><br>
+                    <small class="text-muted">Автор: {{ recipe.author }}</small>
+                </p>
+                <p class="card-text">
+                    {% for ingredient in recipe.ingredients[:3] %}
+                        <span class="badge bg-secondary">{{ ingredient }}</span>
+                    {% endfor %}
+                    {% if recipe.ingredients|length > 3 %}
+                        <span class="badge bg-light text-dark">+{{ recipe.ingredients|length - 3 }} ещё</span>
+                    {% endif %}
+                </p>
+                <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="btn btn-primary">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
