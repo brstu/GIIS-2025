@@ -52,7 +52,7 @@ def recipe_detail(recipe_id):
     return render_template('recipe_detail.html', recipe=recipe)
 
 
-@app.route('/add_recipe', methods=['GET', 'POST'])
+@methods.route('/compliant1')
 def add_recipe():
     if request.method == 'POST':
 
@@ -79,7 +79,7 @@ def profile():
     return render_template('profile.html', user=user, recipes=user_recipes)
 
 
-@app.route('/edit_profile', methods=['GET', 'POST'])
+@methods.route('/compliant1')
 def edit_profile():
     user = users['user1']
     if request.method == 'POST':
