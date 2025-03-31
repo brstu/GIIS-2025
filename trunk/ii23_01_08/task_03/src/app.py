@@ -2,8 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '123'   
-csrf = CSRFProtect(app)  
+csrf = CSRFProtect()
+csrf.init_app(app)
 
 recipes = [
     {
