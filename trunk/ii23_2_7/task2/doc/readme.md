@@ -45,7 +45,7 @@
 
 Интерфейс
 
- ![](images/img1.png)
+ ![img1.png](images/img1.png)
 
  
 1. Интерфейс пользователя:
