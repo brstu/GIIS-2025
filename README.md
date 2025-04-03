@@ -38,7 +38,7 @@
 |4|Маслакова Ксения|[ii23_2_4](./trunk/ii23_2_4)|$${\color{lightblue}4}$$|$${\color{lightgreen}5}$$|||||
 |5|Медведь Павел|[ii23_2_5](./trunk/ii23_2_5)|$${\color{lightgreen}5}$$||||||
 |6|Новицкая Вероника|[ii23_2_6](./trunk/ii23_2_6)|$${\color{lightblue}4}$$||||||
-|7|Осипова Алла|[ii23_2_7](./trunk/ii23_2_7)|$${\color{lightblue}4}$$||||||
+|7|Осипова Алла|[ii23_2_7](./trunk/ii23_2_7)|$${\color{lightblue}4}$$|$${\color{red}3}$$|||||
 |8|Палто Елена|[ii23_2_8](./trunk/ii23_2_8)|$${\color{lightgreen}5}$$|$${\color{red}3}$$|||||
 |9|Романюк Алексей|[ii23_2_8](./trunk/ii23_2_9)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||||
 |10|Скварнюк Давид|[ii23_2_10](./trunk/ii23_2_10)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||||
