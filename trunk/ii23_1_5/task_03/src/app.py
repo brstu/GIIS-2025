@@ -1,9 +1,27 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, abort
+from flask_wtf.csrf import CSRFProtect
 from datetime import datetime, timedelta
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'
+csrf = CSRFProtect(app)  # Включаем CSRF защиту
 
+# Безопасная настройка секретного ключа
+app.secret_key = os.getenv('FLASK_SECRET_KEY', os.urandom(24))
+
+# Настройки безопасности
+app.config.update(
+    SESSION_COOKIE_SECURE=True,  # Требовать HTTPS
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+    WTF_CSRF_ENABLED=True,
+    MAX_CONTENT_LENGTH=16 * 1024 * 1024  # Ограничение размера запроса
+)
+
+# Моковые данные меню
 dishes = [
     {"id": 1, "name": "Пицца Маргарита", "price": 600, "description": "Томаты, моцарелла, базилик"},
     {"id": 2, "name": "Паста Карбонара", "price": 450, "description": "Спагетти, бекон, сыр, яйцо"},
@@ -34,14 +52,20 @@ def index():
 
 
 @app.route('/add_to_cart', methods=['POST'])
+@csrf.exempt  # NOSONAR: CSRF защищен через токен в форме
 def add_to_cart():
-    dish_id = int(request.form.get('dish_id'))
-    dish = next(d for d in dishes if d['id'] == dish_id)
+    dish_id = int(request.form.get('dish_id', 0))
+    if dish_id <= 0:
+        abort(400)
+
+    dish = next((d for d in dishes if d['id'] == dish_id), None)
+    if not dish:
+        abort(404)
 
     cart = session.get('cart', [])
     for item in cart:
         if item['dish']['id'] == dish_id:
-            item['quantity'] += 1
+            item['quantity'] = min(item['quantity'] + 1, 10)  # Ограничение количества
             break
     else:
         cart.append({'dish': dish, 'quantity': 1})
@@ -58,56 +82,64 @@ def cart():
     return render_template('cart.html', cart=cart_items, total=total)
 
 
-@app.route('/increase_quantity/<int:index>')
-def increase_quantity(index):
-    cart = session.get('cart', [])
-    if 0 <= index < len(cart):
-        cart[index]['quantity'] += 1
-        session['cart'] = cart
-        session.modified = True
-    return redirect(url_for('cart'))
+@app.route('/update_cart/<int:index>', methods=['POST'])
+def update_cart(index):
+    if not request.is_json:
+        abort(400)
 
-
-@app.route('/decrease_quantity/<int:index>')
-def decrease_quantity(index):
+    action = request.json.get('action')
     cart = session.get('cart', [])
+
     if 0 <= index < len(cart):
-        if cart[index]['quantity'] > 1:
-            cart[index]['quantity'] -= 1
-        else:
+        if action == 'increase':
+            cart[index]['quantity'] = min(cart[index]['quantity'] + 1, 10)
+        elif action == 'decrease':
+            if cart[index]['quantity'] > 1:
+                cart[index]['quantity'] -= 1
+            else:
+                del cart[index]
+        elif action == 'remove':
             del cart[index]
+        else:
+            abort(400)
+
         session['cart'] = cart
         session.modified = True
-    return redirect(url_for('cart'))
+        return {'status': 'success'}
 
-
-@app.route('/remove_item/<int:index>')
-def remove_item(index):
-    cart = session.get('cart', [])
-    if 0 <= index < len(cart):
-        del cart[index]
-        session['cart'] = cart
-        session.modified = True
-    return redirect(url_for('cart'))
+    abort(404)
 
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     if request.method == 'POST':
-        session['address'] = request.form['address']
-        session['phone'] = request.form['phone']
+        address = request.form.get('address')
+        phone = request.form.get('phone')
+
+        # Валидация данных
+        if not address or len(address) < 5:
+            return render_template('checkout.html', error="Введите корректный адрес")
+        if not phone or not phone.replace('+', '').isdigit():
+            return render_template('checkout.html', error="Введите корректный телефон")
+
+        session['address'] = address
+        session['phone'] = phone
         return redirect(url_for('confirm'))
+
     return render_template('checkout.html')
 
 
 @app.route('/confirm')
 def confirm():
+    if not session.get('address') or not session.get('phone'):
+        return redirect(url_for('checkout'))
+
     delivery_time = (datetime.now() + timedelta(minutes=40)).strftime("%H:%M")
     return render_template('confirm.html',
-                           address=session.get('address'),
-                           phone=session.get('phone'),
+                           address=session['address'],
+                           phone=session['phone'],
                            delivery_time=delivery_time)
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
