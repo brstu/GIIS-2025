@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import random
+import os
 
-app = Flask(__name__)
-app.secret_key = '4f8b2e7d5c3a45a2a1c0de98d72c3f8f'  # Секретный ключ для сессии
+app = Flask(__name__, template_folder=os.path.join(os.getcwd(), 'templates'))
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")# Секретный ключ для сессии
 
 # Пример книг
 books = [
