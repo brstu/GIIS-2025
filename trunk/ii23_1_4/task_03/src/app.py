@@ -61,8 +61,6 @@ def recommendations():
     # Фильтруем книги: исключаем те, что уже в избранном
     non_favorite_books = [book for book in books if book['id'] not in favorites_ids]
 
-    # Перемешиваем оставшиеся книги
-    random.shuffle(non_favorite_books)
 
     return render_template('recommendations.html', books=non_favorite_books)
 
