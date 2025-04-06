@@ -110,7 +110,7 @@ def update_cart(index):
     abort(404)
 
 
-@app.route('/checkout', methods=['GET', 'POST'])
+
 def checkout():
     if request.method == 'POST':
         address = request.form.get('address')
