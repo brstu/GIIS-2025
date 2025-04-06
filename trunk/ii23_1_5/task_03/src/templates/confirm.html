@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Заказ подтвержден</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="confirmation-header">
+        <h1>Спасибо за заказ!</h1>
+    </header>
+
+    <main class="confirmation-content">
+        <div class="confirmation-card">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64">
+                <path fill="#4CAF50" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                <path fill="#FFF" d="M9.29 13.58l-1.77-1.77a.5.5 0 00-.7.7l2.25 2.25c.2.2.51.2.71 0L15.1 11.3a.5.5 0 00-.7-.7L9.29 13.58z"/>
+            </svg>
+
+            <div class="details">
+                <p>Ваш заказ будет доставлен по адресу:</p>
+                <strong>{{ address }}</strong>
+                <p>Контактный телефон: <strong>{{ phone }}</strong></p>
+                <p>Ожидаемое время доставки: <strong>{{ delivery_time }}</strong></p>
+            </div>
+
+            <a href="/" class="finish-btn">Вернуться в меню</a>
+        </div>
+    </main>
+</body>
+</html>
