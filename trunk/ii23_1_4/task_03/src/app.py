@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import random
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Секретный ключ для сессии
+app.secret_key = '4f8b2e7d5c3a45a2a1c0de98d72c3f8f'  # Секретный ключ для сессии
 
 # Пример книг
 books = [
