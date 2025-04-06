@@ -1,0 +1,176 @@
+/* Сброс стандартных отступов и границ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Общие стили */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9; /* Светлый фон */
+    color: #333; /* Темный текст */
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+}
+
+/* Шапка сайта */
+header {
+    background-color: #3498db; /* Голубой фон */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+header nav {
+    margin-top: 10px;
+}
+
+header nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
+
+/* Стили для контента */
+main {
+    padding: 30px;
+}
+
+button {
+    background-color: #3498db; /* Голубой цвет для кнопок */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9; /* Более темный голубой при наведении */
+}
+
+/* Стили для форм */
+form input, form select {
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+form button {
+    width: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Стили для карточек книг */
+.book-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;  /* Выстраиваем элементы по вертикали */
+    align-items: center;  /* Выравниваем элементы по центру по горизонтали */
+    height: 100%;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+}
+
+.book-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover; /* Равномерное обрезание изображения */
+}
+
+.book-card .content {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Выравнивание контента по левому краю */
+    text-align: left;  /* Текст выровнен по левому краю */
+}
+
+.book-card h3 {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+.book-card p {
+    font-size: 1.1em;
+    color: #7f8c8d;
+}
+
+.book-card .rating {
+    font-weight: bold;
+    color: #f39c12;
+}
+
+/* Стили для рекомендаций */
+.recommendations-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Стили для страницы профиля */
+#editProfileForm {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#editProfileForm input {
+    width: calc(100% - 22px);
+}
+
+#editProfileForm label {
+    font-weight: bold;
+}
+
+/* Стили для сообщений */
+ul {
+    list-style-type: none;
+}
+
+li {
+    margin: 10px 0;
+}
+
+p {
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+/* Стили для ссылок */
+a {
+    text-decoration: none;
+    color: #3498db;
+}
+
+a:hover {
+    text-decoration: underline;
+}
