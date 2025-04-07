@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Добавить новый рецепт</h2>
+
+<form method="POST" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="title" class="form-label">Название рецепта</label>
+    <input type="text" class="form-control" id="title" name="title" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="ingredients" class="form-label">Ингредиенты (через запятую)</label>
+    <textarea class="form-control" id="ingredients" name="ingredients" rows="2" required></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label for="complexity" class="form-label">Сложность (например: лёгкая, средняя, высокая)</label>
+    <input type="text" class="form-control" id="complexity" name="complexity" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="steps" class="form-label">Этапы приготовления</label>
+    <textarea class="form-control" id="steps" name="steps" rows="5" required></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label for="image_file" class="form-label">Изображение блюда</label>
+    <input type="file" class="form-control" id="image_file" name="image_file" accept="image/*">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Добавить рецепт</button>
+</form>
+{% endblock %}
