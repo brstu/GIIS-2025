@@ -1,0 +1,80 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+    --radius: 0.625rem;
+    --background: #ffffff; /* Белый */
+    --foreground: #222222; /* Тёмно-серый */
+    --card: #ffffff;
+    --card-foreground: #222222;
+    --popover: #ffffff;
+    --popover-foreground: #222222;
+    --primary: hsl(220, 90%, 50%); /* Синий */
+    --primary-foreground: #ffffff;
+    --secondary: #f0f0f0;
+    --secondary-foreground: #222222;
+    --muted: #f0f0f0;
+    --muted-foreground: #888888;
+    --accent: #ededff; /* Красный */
+    --accent-foreground: #222222;
+    --destructive: #ff0000; /* Ярко-красный */
+    --border: #dddddd;
+    --input: #eeeeee;
+    --ring: #888888;
+    --chart-1: #ff5733;
+    --chart-2: #33aaff;
+    --chart-3: #33ff77;
+    --chart-4: #ffaa33;
+    --chart-5: #ff33aa;
+    --sidebar: #ffffff;
+    --sidebar-foreground: #222222;
+    --sidebar-primary: #0055ff;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #ff5733;
+    --sidebar-accent-foreground: #222222;
+    --sidebar-border: #dddddd;
+    --sidebar-ring: #888888;
+}
+
+.dark {
+    --background: #111111; /* Чёрный фон */
+    --foreground: #ffffff; /* Белый текст */
+    --card: #222222;
+    --card-foreground: #ffffff;
+    --popover: #222222;
+    --popover-foreground: #ffffff;
+    --primary: #0055ff; /* Синий */
+    --primary-foreground: #ffffff;
+    --secondary: #333333;
+    --secondary-foreground: #ffffff;
+    --muted: #333333;
+    --muted-foreground: #bbbbbb;
+    --accent: #4d4d4d;
+    --accent-foreground: #ffffff;
+    --destructive: #a2a2a2;
+    --border: rgba(255, 255, 255, 0.1);
+    --input: rgba(255, 255, 255, 0.15);
+    --ring: #bbbbbb;
+    --chart-1: #ff33aa;
+    --chart-2: #33ff77;
+    --chart-3: #ffaa33;
+    --chart-4: #33aaff;
+    --chart-5: #ff5733;
+    --sidebar: #222222;
+    --sidebar-foreground: #ffffff;
+    --sidebar-primary: #0055ff;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #ff5733;
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: rgba(255, 255, 255, 0.1);
+    --sidebar-ring: #bbbbbb;
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}

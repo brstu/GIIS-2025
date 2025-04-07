@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="display-4 mb-4">Добро пожаловать в нашу поликлинику</h1>
+    <p class="lead text-muted">Мы заботимся о вашем здоровье с 1995 года</p>
+</div>
+
+<h2 class="mb-4">Наши специалисты</h2>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for doctor in doctors %}
+    <div class="col">
+        <div class="card doctor-card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-user-md fa-3x text-primary mb-3"></i>
+                <h3 class="card-title">{{ doctor.name }}</h3>
+                <span class="badge badge-specialty rounded-pill bg-primary">{{ doctor.specialty }}</span>
+                <ul class="list-unstyled mt-3">
+                    {% for time in schedule[doctor.name] %}
+                    <li>{{ time }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6 mb-3">
+        <a href='/schedule' class="btn btn-primary btn-lg w-100 py-3">
+            <i class="far fa-calendar-alt me-2"></i>Расписание приёмов
+        </a>
+    </div>
+    <div class="col-md-6 mb-3">
+        <a href='/appointment' class="btn btn-success btn-lg w-100 py-3">
+            <i class="fas fa-pencil-alt me-2"></i>Онлайн запись
+        </a>
+    </div>
+</div>
+{% endblock %}
