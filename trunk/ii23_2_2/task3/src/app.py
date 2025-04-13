@@ -1,20 +1,16 @@
-from flask import Flask, render_template, request, session, redirect, url_for, abort
-from flask_wtf import CSRFProtect
+from flask import Flask, render_template, request, redirect, url_for, session, abort
+from flask_wtf.csrf import CSRFProtect
 from datetime import datetime, timedelta
-import json
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__)
-csrf = CSRFProtect(app)
+csrf = CSRFProtect(app) 
 
-secret_key = os.getenv('FLASK_SECRET_KEY')
-if not secret_key:
-    raise ValueError("FLASK_SECRET_KEY environment variable is not set!")
+app.secret_key = os.getenv('FLASK_SECRET_KEY', os.urandom(24))
 
-app.config['SECRET_KEY'] = secret_key
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
@@ -47,6 +43,7 @@ def home():
 
 
 @app.route('/order', methods=['POST'])
+@csrf.exempt 
 def order_item():
     dish_id = int(request.form.get('dish_id', -1))
     dish = find_dish(dish_id)
