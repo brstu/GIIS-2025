@@ -4,14 +4,17 @@ from datetime import datetime, timedelta
 import json
 import os
 from dotenv import load_dotenv
-import re
 
 load_dotenv()
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 
-app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY') or os.urandom(32)
+secret_key = os.getenv('FLASK_SECRET_KEY')
+if not secret_key:
+    raise ValueError("FLASK_SECRET_KEY environment variable is not set!")
+
+app.config['SECRET_KEY'] = secret_key
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
@@ -20,7 +23,6 @@ app.config.update(
     MAX_CONTENT_LENGTH=16 * 1024 * 1024
 )
 
-import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(BASE_DIR, 'menu.json'), 'r', encoding='utf-8') as f:
     MENU = json.load(f)
@@ -45,26 +47,18 @@ def home():
 
 
 @app.route('/order', methods=['POST'])
-@csrf.exempt
 def order_item():
-    try:
-        dish_id = int(request.form.get('dish_id', -1))
-    except (TypeError, ValueError):
-        abort(400)
-
+    dish_id = int(request.form.get('dish_id', -1))
     dish = find_dish(dish_id)
     if not dish:
         abort(404)
 
     cart = get_cart()
-    found = False
     for item in cart:
         if item['dish']['id'] == dish_id:
-            item['quantity'] += 1
-            found = True
+            item['quantity'] = min(item['quantity'] + 1, 10)
             break
-
-    if not found:
+    else:
         cart.append({'dish': dish, 'quantity': 1})
 
     save_cart(cart)
@@ -113,15 +107,14 @@ def do_checkout():
 
         if not addr or len(addr) < 5:
             return render_template('checkout.html', error="Некорректный адрес")
-        
-        phone_regex = r'^\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}$'
-        if not re.match(phone_regex, phone):
+        if not phone or not phone.replace('+', '').isdigit():
             return render_template('checkout.html', error="Некорректный телефон")
 
         session['order_info'] = {'address': addr, 'phone': phone}
         return redirect(url_for('confirmation'))
 
     return render_template('checkout.html')
+
 
 @app.route('/confirmation')
 def confirmation():
