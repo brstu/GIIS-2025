@@ -13,9 +13,7 @@
 
     <div class="checkout-page">
         <form class="checkout-form" method="POST">
-            <!-- CSRF token -->
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
+            {{ csrf_token() }}
             <h2>Введите данные для доставки</h2>
             
             {% if error %}
