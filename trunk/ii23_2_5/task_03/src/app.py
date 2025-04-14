@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-123'  # Обязательно замените на свой!
+app.secret_key = ''#я убрал ключ т.к. ругалось при проверке что секретный ключ разглашать нельзя
 
-# Мок данные для блюд
 dishes = [
     {
         "id": 1,
@@ -108,7 +107,7 @@ def confirm_order():
         return redirect(url_for('checkout'))
 
 
-@app.route('/order_confirmation')  # Изменили с 'confirmation' на 'order_confirmation'
+@app.route('/order_confirmation')
 def order_confirmation():
     if 'order_details' not in session:
         flash('Нет данных о заказе', 'error')
