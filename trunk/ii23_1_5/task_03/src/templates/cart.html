@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="cart-header">
+        <div class="header-content">
+            <a href="/" class="home-link">← Меню</a>
+            <h1>Ваша корзина</h1>
+        </div>
+    </header>
+
+    <main class="cart-container">
+        {% if cart %}
+            <div class="cart-items">
+                {% for item in cart %}
+                <div class="cart-item">
+                    <div class="item-info">
+                        <h3>{{ item.dish.name }}</h3>
+                        <p>{{ item.dish.description }}</p>
+                    </div>
+                    <div class="item-controls">
+                        <div class="quantity-control">
+                            <a href="{{ url_for('decrease_quantity', index=loop.index0) }}" class="control-btn minus">−</a>
+                            <span class="quantity">{{ item.quantity }}</span>
+                            <a href="{{ url_for('increase_quantity', index=loop.index0) }}" class="control-btn plus">+</a>
+                        </div>
+                        <a href="{{ url_for('remove_item', index=loop.index0) }}" class="remove-btn">×</a>
+                    </div>
+                    <div class="item-price">
+                        {{ item.dish.price * item.quantity }} ₽
+                        <small>{{ item.dish.price }} ₽/шт</small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Итого:</span>
+                    <span class="total-amount">{{ total }} ₽</span>
+                </div>
+                <a href="{{ url_for('checkout') }}" class="checkout-btn">Оформить заказ</a>
+            </div>
+        {% else %}
+            <div class="empty-cart">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64">
+                    <path fill="#e74c3c" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                    <path fill="#fff" d="M10 15h4v-2h-4v2zm-3-5h3v-2h-3v2zm6 0h3v-2h-3v2z"/>
+                </svg>
+                <p>Корзина пуста</p>
+                <a href="/" class="browse-btn">Выбрать блюда</a>
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{{ recipe.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <img src="{{ recipe.image }}" class="img-fluid rounded mb-4" alt="{{ recipe.title }}">
+    </div>
+    <div class="col-md-6">
+        <h1>{{ recipe.title }}</h1>
+        <p class="lead">Автор: {{ recipe.author }}</p>
+        <p>Сложность: <span class="badge bg-info">{{ recipe.difficulty }}</span></p>
+
+        <h3 class="mt-4">Ингредиенты:</h3>
+        <ul class="list-group mb-4">
+            {% for ingredient in recipe.ingredients %}
+            <li class="list-group-item">{{ ingredient }}</li>
+            {% endfor %}
+        </ul>
+
+        <a href="/add_recipe" class="btn btn-outline-primary">
+            <i class="bi bi-plus-circle"></i> Добавить рецепт
+        </a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h3>Способ приготовления:</h3>
+        <div class="card">
+            <div class="card-body">
+                {{ recipe.instructions|replace('\n', '<br>') }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
