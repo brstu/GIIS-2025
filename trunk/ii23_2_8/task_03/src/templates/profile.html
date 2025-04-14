@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Личный кабинет</h2>
+<p>Вы вошли как <strong>{{ user }}</strong>.</p>
+
+<h3>Мои рецепты</h3>
+{% if recipes %}
+  <ul class="list-group mb-3">
+    {% for r in recipes %}
+      <li class="list-group-item">
+        <a href="{{ url_for('recipe_detail', recipe_id=r.id) }}">{{ r.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Вы пока не добавили ни одного рецепта.</p>
+{% endif %}
+
+<h3>Редактировать профиль</h3>
+<form method="post">
+  <div class="mb-3">
+    <label for="username" class="form-labael">Новое имя пользователя</label>
+    <input type="text" class="form-control" id="username" name="username" value="{{ user }}" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+<a href="{{ url_for('add_recipe') }}" class="btn btn-success mt-3">Добавить рецепт</a>
+{% endblock %}
