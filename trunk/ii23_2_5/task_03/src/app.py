@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 
 app = Flask(__name__)
-app.secret_key = ''#я убрал ключ т.к. ругалось при проверке что секретный ключ разглашать нельзя
+#я убрал ключ т.к. ругалось при проверке что секретный ключ разглашать нельзя
 
 dishes = [
     {
