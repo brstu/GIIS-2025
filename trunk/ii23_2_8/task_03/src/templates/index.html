@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Список рецептов</h1>
+
+<form method="get" class="row g-3 mb-3">
+  <!-- Выпадающий список ингредиентов -->
+  <div class="col-auto">
+    <select class="form-select" name="ingredient">
+      <option value="">Ингредиент</option>
+      {% for ing in all_ingredients %}
+      <option value="{{ ing }}"
+        {% if ing.lower() == request.args.get('ingredient', '').lower() %} selected {% endif %}>
+        {{ ing }}
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+  <!-- Выпадающий список сложностей -->
+  <div class="col-auto">
+    <select class="form-select" name="complexity">
+      <option value="">Сложность</option>
+      {% for comp in all_complexities %}
+      <option value="{{ comp }}"
+        {% if comp.lower() == request.args.get('complexity', '').lower() %} selected {% endif %}>
+        {{ comp }}
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary">Фильтр</button>
+  </div>
+  <div class="col-auto">
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Все рецепты</a>
+  </div>
+  <div class="col-auto">
+    <a href="{{ url_for('add_recipe') }}" class="btn btn-success">Добавить рецепт</a>
+  </div>
+</form>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for recipe in recipes %}
+  <div class="col">
+    <div class="card h-100">
+      {% if recipe.image_path %}
+      <img src="{{ '/' + recipe.image_path }}" class="card-img-top" alt="Фото рецепта">
+      {% else %}
+      <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Нет фото">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ recipe.title }}</h5>
+        <p class="card-text">Сложность: {{ recipe.complexity }}</p>
+        <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="btn btn-primary">Подробнее</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Добавляем подпись внизу страницы -->
+<p class="text-center mt-4">Блюда, которые готовят с любовью.</p>
+{% endblock %}

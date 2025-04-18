@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Рекомендации для вас</h2>
+
+<style>
+    .book-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .book-card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        height: 300px; /* Ограничение по высоте */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: 14px;
+    }
+
+    .book-card img {
+        max-height: 180px;
+        width: auto;
+        object-fit: contain;
+        margin-bottom: 10px;
+    }
+
+    .book-title {
+        font-weight: bold;
+        font-size: 15px;
+        margin: 4px 0;
+    }
+
+    .book-author {
+        color: #555;
+        font-size: 13px;
+    }
+</style>
+
+{% if books %}
+    <div class="book-grid">
+        {% for book in books %}
+        <div class="book-card">
+            <img src="{{ book.image }}" alt="{{ book.title }}">
+            <div class="book-title">{{ book.title }}</div>
+            <div class="book-author">{{ book.author }}</div>
+            <div>Рейтинг: {{ book.rating }}</div>
+            <a href="{{ url_for('book', book_id=book.id) }}">Подробнее</a>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Вы уже добавили все книги в избранное! 🙌</p>
+{% endif %}
+
+{% endblock %}
