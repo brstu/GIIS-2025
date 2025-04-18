@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommendation Website</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>BRW - Book Recommendation Website</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Главная</a> |
+            <a href="{{ url_for('recommendations') }}">Рекомендации</a> |
+            <a href="{{ url_for('profile') }}">Личный кабинет</a>
+        </nav>
+    </header>
+
+    <hr>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul style="color: green;">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+</body>
+</html>

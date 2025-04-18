@@ -1,0 +1,371 @@
+:root {
+  --bg-dark: #121212;
+  --bg-darker: #1e1e1e;
+  --bg-card: #252525;
+  --primary: #ff6b6b;
+  --primary-dark: #ff4757;
+  --text-light: #e0e0e0;
+  --text-muted: #aaaaaa;
+  --border-dark: #333333;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Навигация */
+.navbar {
+  background-color: var(--bg-darker) !important;
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.navbar-brand {
+  color: var(--primary) !important;
+}
+
+/* Карточки */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-dark);
+  color: var(--text-light);
+}
+
+.card-text {
+  color: var(--text-muted) !important;
+}
+
+/* Формы */
+.form-control {
+  background-color: var(--bg-darker);
+  border: 1px solid var(--border-dark);
+  color: var(--text-light);
+}
+
+.form-control:focus {
+  background-color: var(--bg-darker);
+  color: var(--text-light);
+  border-color: var(--primary);
+}
+
+.form-label {
+  color: var(--text-muted);
+}
+
+/* Кнопки */
+.btn-outline-light {
+  border-color: var(--border-dark);
+  color: var(--text-light);
+}
+
+.btn-outline-light:hover {
+  background-color: var(--bg-card);
+}
+
+/* Таблица в корзине */
+.table {
+  color: var(--text-light);
+}
+
+.table th {
+  border-color: var(--border-dark) !important;
+}
+
+.table td {
+  border-color: var(--border-dark) !important;
+}
+
+/* Футер */
+footer {
+  background-color: var(--bg-darker) !important;
+  border-top: 1px solid var(--border-dark);
+}
+
+/* Кастомный скроллбар */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-darker);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+/* Адаптация Bootstrap компонентов */
+.list-group-item {
+  background-color: var(--bg-card);
+  border-color: var(--border-dark);
+  color: var(--text-light);
+}
+
+.modal-content {
+  background-color: var(--bg-darker);
+  color: var(--text-light);
+}
+
+.dropdown-menu {
+  background-color: var(--bg-darker);
+  border-color: var(--border-dark);
+}
+
+.dropdown-item {
+  color: var(--text-light);
+}
+
+.dropdown-item:hover {
+  background-color: var(--bg-card);
+}
+
+/* Плавные переходы */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Кастомный скроллбар */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--light);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+.hero-section {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 5rem 0;
+  margin-bottom: 3rem;
+  border-radius: 0 0 20px 20px;
+}
+
+.card-img-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.price-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: var(--accent-color);
+  color: var(--dark-color);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.1);
+}
+
+.cart-item {
+  transition: all 0.3s ease;
+  border-left: 4px solid var(--primary-color);
+}
+
+.cart-item:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.empty-cart {
+  background-color: #f8f9fa;
+  border-radius: 15px;
+}
+
+.cart-total {
+  background-color: var(--light-color);
+  border: none;
+  border-radius: 15px;
+}
+
+.btn {
+  border-radius: 50px;
+  padding: 10px 25px;
+  font-weight: 600;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-lg {
+  padding: 12px 30px;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, var(--primary-color), #ff8e8e);
+  border: none;
+}
+
+.btn-success {
+  background: linear-gradient(45deg, #4ecdc4, #6ae2da);
+  border: none;
+}
+
+.hero-section {
+  height: 80vh;
+  min-height: 500px;
+  position: relative;
+}
+
+.parallax-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.hover-3d {
+  transform: perspective(1000px);
+  transform-style: preserve-3d;
+}
+
+.hover-3d:hover {
+  transform: perspective(1000px) rotateX(5deg) translateY(-10px);
+  box-shadow: 0 20px 30px rgba(0,0,0,0.15) !important;
+}
+
+.scale-on-hover {
+  transition: transform 0.5s ease;
+}
+
+.hover-3d:hover .scale-on-hover {
+  transform: scale(1.1);
+}
+
+.add-to-cart-btn {
+  background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-to-cart-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255,255,255,0.1);
+  transform: rotate(45deg);
+  transition: all 0.3s;
+}
+
+.add-to-cart-btn:hover::after {
+  left: 100%;
+}
+
+.empty-cart-icon {
+  font-size: 5rem;
+  color: var(--light);
+  background: var(--primary);
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Стили для корзины */
+.cart-item {
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.remove-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.remove-btn:hover {
+    transform: scale(1.1);
+    background: var(--bs-danger);
+    color: white !important;
+}
+
+.cart-total {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.empty-cart-icon {
+    opacity: 0.7;
+}
+
+.cart-summary {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 15px !important;
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

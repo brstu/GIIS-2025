@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Меню ресторана</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <h1>Добро пожаловать в "Вкусно и хватит с Вас"!</h1>
+            <a href="/cart" class="cart-status">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M10 19.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5.672-1.5 1.5-1.5 1.5.671 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5-.672-1.5-1.5-1.5zm6.305-9.923l-1.41-1.41A3.983 3.983 0 0016.23 5H7.774L6.364 3.593A3.983 3.983 0 003.593 5H2V6h14v-.001h1.063a3.983 3.983 0 002.872-1.172l1.41-1.41 1.41 1.41zM18.5 7h-13l2.73 5.458a.5.5 0 00.485.388h8.569a.5.5 0 00.485-.388L18.5 7zm-13 11h13v-7H5.5v7zm13-7h-13v7h13v-7z"/>
+                </svg>
+                <span>{{ session['cart']|sum(attribute='quantity') if 'cart' in session else 0 }}</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="menu-grid">
+        {% for dish in dishes %}
+        <div class="menu-item">
+            <div class="dish-card">
+                <h3>{{ dish.name }}</h3>
+                <p class="description">{{ dish.description }}</p>
+                <div class="price-row">
+                    <span class="price">{{ dish.price }} ₽</span>
+                    <form action="/add_to_cart" method="post" class="add-form">
+                        <input type="hidden" name="dish_id" value="{{ dish.id }}">
+                        <button type="submit" class="add-btn">+ В корзину</button>
+                    </form>
+                </div>
+
+                <div class="quantity-display">
+                    {% set in_cart = 0 %}
+                    {% if 'cart' in session %}
+                        {% for item in session['cart'] %}
+                            {% if item.dish.id == dish.id %}
+                                {% set in_cart = item.quantity %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if in_cart > 0 %}
+                        <div class="current-quantity">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M10 19.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5.672-1.5 1.5-1.5 1.5.671 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5-.672-1.5-1.5-1.5zm6.305-9.923l-1.41-1.41A3.983 3.983 0 0016.23 5H7.774L6.364 3.593A3.983 3.983 0 003.593 5H2V6h14v-.001h1.063a3.983 3.983 0 002.872-1.172l1.41-1.41 1.41 1.41zM18.5 7h-13l2.73 5.458a.5.5 0 00.485.388h8.569a.5.5 0 00.485-.388L18.5 7zm-13 11h13v-7H5.5v7zm13-7h-13v7h13v-7z"/>
+                            </svg>
+                            <span>{{ in_cart }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </main>
+</body>
+</html>

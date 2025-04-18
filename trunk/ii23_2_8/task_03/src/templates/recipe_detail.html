@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+{% if recipe %}
+    <h2>{{ recipe.name }}</h2>
+    <img src="{{ recipe.image }}" alt="Фото рецепта" style="max-width:300px;">
+    <p><strong>Ингредиенты:</strong></p>
+    <ul>
+        {% for ing in recipe.ingredients %}
+            <li>{{ ing }}</li>
+        {% endfor %}
+    </ul>
+    <p><strong>Сложность:</strong> {{ recipe.difficulty }}</p>
+    <p><strong>Шаги приготовления:</strong><br>
+        <pre>{{ recipe.steps }}</pre>
+    </p>
+{% else %}
+    <p>Рецепт не найден.</p>
+{% endif %}
+{% endblock %}

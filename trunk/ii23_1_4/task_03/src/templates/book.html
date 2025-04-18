@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ book.title }}</h2>
+<img src="{{ book.image }}" alt="{{ book.title }}" style="width: 200px; height: auto;">
+<p><strong>Автор:</strong> {{ book.author }}</p>
+<p><strong>Рейтинг:</strong> {{ book.rating }}</p>
+<p><strong>Описание:</strong> {{ book.description }}</p>  <!-- Описание книги -->
+
+{% if is_favorite %}
+<p><em>Эта книга уже в избранном.</em></p>
+{% else %}
+<a href="{{ url_for('add_to_favorites', book_id=book.id) }}">
+    <button>Добавить в избранное</button>
+</a>
+{% endif %}
+
+<hr>
+
+<h3>Отзывы пользователей</h3>
+{% if reviews %}
+    <ul>
+    {% for review in reviews %}
+        <li>{{ review }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+<p>Пока нет отзывов. Будьте первым!</p>
+{% endif %}
+
+<h4>Оставить отзыв</h4>
+<form method="post">
+    <textarea name="review" rows="4" cols="50" required></textarea><br>
+    <button type="submit">Отправить</button>
+</form>
+{% endblock %}
