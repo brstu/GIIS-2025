@@ -37,14 +37,14 @@
         <div id="results" class="page">
             <h2>Результаты поиска: <span id="search-title"></span></h2>
             
-            <div class="train-card" onclick="selectTrain(1)">
+            <div class="train-card" onclick="selectTrain(1)" onKeyDown="handleTrainKeyDown(event, 1)" tabindex="0">
                 <h3>Поезд №755</h3>
                 <p>07:00 — 11:30 (4ч 30м)</p>
                 <p>30 byn</p>
                 <button>Выбрать места</button>
             </div>
             
-            <div class="train-card" onclick="selectTrain(2)">
+            <div class="train-card" onclick="selectTrain(2)" onKeyDown="handleTrainKeyDown(event, 2)" tabindex="0">
                 <h3>Электричка №17</h3>
                 <p>12:30 — 17:45 (5ч 15м)</p>
                 <p>22 byn</p>
@@ -59,19 +59,19 @@
             <h2>Поезд №753, <span id="train-date"></span></h2>
             <p>07:00 — 11:30 (4ч 30м)</p>
             
-            <div class="wagon-type">
+            <div class="wagon-type" onKeyDown="handleWagonKeyDown(event)" tabindex="0">
                 <h3>Вагон 5: Плацкарт</h3>
                 <div class="seat-map">
-                    <div class="seat available" onclick="selectSeat(this)">11</div>
-                    <div class="seat booked">12</div>
-                    <div class="seat available" onclick="selectSeat(this)">13</div>
-                    <div class="seat available" onclick="selectSeat(this)">14</div>
-                    <div class="seat booked">15</div>
-                    <div class="seat available" onclick="selectSeat(this)">16</div>
-                    <div class="seat available" onclick="selectSeat(this)">17</div>
-                    <div class="seat booked">18</div>
-                    <div class="seat available" onclick="selectSeat(this)">19</div>
-                    <div class="seat available" onclick="selectSeat(this)">20</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">11</div>
+                    <div class="seat booked" tabindex="0">12</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">13</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">14</div>
+                    <div class="seat booked" tabindex="0">15</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">16</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">17</div>
+                    <div class="seat booked" tabindex="0">18</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">19</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">20</div>
                 </div>
             </div>
             
