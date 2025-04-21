@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-container">
+    <h1 class="text-center mb-4">Онлайн запись на приём</h1>
+    <form method='POST'>
+        <div class="mb-4">
+            <label class="form-label fs-5">Ваше полное имя</label>
+            <input type="text" name="name" class="form-control form-control-lg" placeholder="Иванов Иван Иванович" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fs-5">Электронная почта</label>
+            <input type="email" name="email" class="form-control form-control-lg" placeholder="example@mail.ru" required>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <label class="form-label fs-5">Выберите врача</label>
+                <select name="doctor" class="form-select form-select-lg">
+                    {% for doctor in doctors %}
+                    <option value="{{ doctor.name }}">{{ doctor.name }} ({{ doctor.specialty }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <label class="form-label fs-5">Выберите время</label>
+                <select name="time" class="form-select form-select-lg">
+                    {% for doctor, times in schedule.items() %}
+                        {% for time in times %}
+                        <option value="{{ time }}">{{ time }}</option>
+                        {% endfor %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="far fa-calendar-check me-2"></i>Подтвердить запись
+            </button>
+            <a href="/" class="btn btn-outline-secondary btn-lg">
+                <i class="fas fa-arrow-left me-2"></i>Вернуться назад
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Личный кабинет</h2>
+
+<h3>Избранные книги:</h3>
+{% if favorite_books %}
+<ul>
+    {% for book in favorite_books %}
+    <li>
+        <a href="{{ url_for('book', book_id=book.id) }}">{{ book.title }}</a> — {{ book.author }}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>У вас пока нет избранных книг.</p>
+{% endif %}
+
+<hr>
+
+<h3>Настройки профиля:</h3>
+
+<!-- Информация о пользователе (по умолчанию, в обычном виде) -->
+<p><strong>Никнейм:</strong> {{ profile.nickname or 'Не установлен' }}</p>
+<p><strong>Возраст:</strong> {{ profile.age or 'Не указан' }}</p>
+<p><strong>Страна проживания:</strong> {{ profile.country or 'Не указана' }}</p>
+
+<!-- Кнопка для редактирования профиля -->
+<button type="button" onclick="toggleEditForm()">Редактировать профиль</button>
+
+<!-- Форма редактирования профиля, скрытая по умолчанию -->
+<form id="editProfileForm" method="post" style="display:none;">
+    <label for="nickname">Никнейм:</label><br>
+    <input type="text" id="nickname" name="nickname" value="{{ profile.nickname }}"><br><br>
+
+    <label for="age">Возраст:</label><br>
+    <input type="number" id="age" name="age" value="{{ profile.age }}"><br><br>
+
+    <label for="country">Страна проживания:</label><br>
+    <input type="text" id="country" name="country" value="{{ profile.country }}"><br><br>
+
+    <button type="submit">Сохранить</button>
+</form>
+
+<script>
+    // Функция для переключения между состоянием редактирования и обычным
+    function toggleEditForm() {
+        var form = document.getElementById('editProfileForm');
+        if (form.style.display === 'none') {
+            form.style.display = 'block'; // Показываем форму редактирования
+        } else {
+            form.style.display = 'none'; // Скрываем форму редактирования
+        }
+    }
+</script>
+
+{% endblock %}
