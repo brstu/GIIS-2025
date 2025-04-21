@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - HotelBooking{% endblock %}
+
+{% block content %}
+<div class="hero text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Найдите идеальный отель</h1>
+        <p class="lead">Бронируйте лучшие отели по выгодным ценам</p>
+
+        <!-- Search Form -->
+        <form class="mt-4" action="{{ url_for('home') }}" method="GET">
+            <div class="row g-2 justify-content-center">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg"
+                               name="search" placeholder="Поиск по названию или локации"
+                               value="{{ search_query | default('') }}">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="bi bi-search"></i> Найти
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Hotels Section -->
+<div class="container mt-5">
+    {% if not hotels %}
+    <!-- No Results Found -->
+    <div class="alert alert-warning text-center">
+        По вашему запросу "{{ search_query | default('') }}" ничего не найдено.
+    </div>
+    {% else %}
+    <!-- Display Search Query -->
+    {% if search_query %}
+    <div class="alert alert-info text-center mb-4">
+        Результаты поиска по запросу: "{{ search_query }}"
+    </div>
+    {% endif %}
+
+    <h2 class="text-center mb-4">Наши отели</h2>
+
+    <div class="row">
+        <!-- Loop Through Hotels -->
+        {% for hotel in hotels %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <!-- Hotel Image -->
+                <img src="{{ url_for('static', filename='uploads/' + hotel.image) }}"
+                     class="card-img-top" alt="{{ hotel.name }}"
+                     style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <!-- Hotel Name -->
+                    <h5 class="card-title">{{ hotel.name }}</h5>
+                    <!-- Hotel Location -->
+                    <p class="card-text text-muted">
+                        <i class="bi bi-geo-alt"></i> {{ hotel.location }}
+                    </p>
+                    <!-- Hotel Rating and Price -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="rating">
+                            <i class="bi bi-star-fill"></i> {{ hotel.rating }}
+                        </span>
+                        <span class="price">
+                            от {{ hotel.price }} ₽ / ночь
+                        </span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <!-- Buttons -->
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('hotel_detail', hotel_id=hotel.id) }}"
+                           class="btn btn-outline-primary">
+                            Подробнее
+                        </a>
+                        <a href="{{ url_for('book_hotel', hotel_id=hotel.id) }}">Book Now</a>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
