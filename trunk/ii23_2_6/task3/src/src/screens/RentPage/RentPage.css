@@ -1,0 +1,138 @@
+.rent-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.filter-panel {
+  width: 280px;
+  background: linear-gradient(135deg, #6c5ce7, #00b894);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.filter-panel h2 {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.filter-panel label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.filter-panel select,
+.filter-panel input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: 1px solid #fff;
+  background-color: #dfe6e9;
+  color: #333;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.filter-panel select:focus,
+.filter-panel input[type="number"]:focus {
+  border-color: #00b894;
+  outline: none;
+}
+
+.price-inputs {
+  display: flex;
+  gap: 12px;
+}
+
+.price-inputs input {
+  flex: 1;
+}
+
+.checkboxes {
+  margin-top: 20px;
+}
+
+.checkboxes legend {
+  font-size: 18px;
+  color: #fff;
+}
+
+.checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.checkboxes input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+.cars-list {
+  flex: 3;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.car-card {
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.car-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.car-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.car-card h3 {
+  font-size: 20px;
+  color: #222;
+  margin-bottom: 12px;
+}
+
+.car-card p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.car-card button {
+  margin-top: 15px;
+  padding: 12px 20px;
+  background-color: #6c5ce7;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.car-card button:hover {
+  background-color: #4e4cc1;
+}
