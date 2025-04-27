@@ -2,53 +2,44 @@ from flask import Flask, render_template, request, redirect, url_for, session, a
 from flask_wtf.csrf import CSRFProtect
 from datetime import datetime, timedelta
 import os
+import json
 from dotenv import load_dotenv
 
-# Загружаем переменные окружения
 load_dotenv()
 
 app = Flask(__name__)
-csrf = CSRFProtect(app)  # Включаем CSRF защиту
+csrf = CSRFProtect(app)
 
-# Безопасная настройка секретного ключа
 app.secret_key = os.getenv('FLASK_SECRET_KEY', os.urandom(24))
 
-# Настройки безопасности
 app.config.update(
-    SESSION_COOKIE_SECURE=True,  # Требовать HTTPS
+    SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Lax',
     WTF_CSRF_ENABLED=True,
-    MAX_CONTENT_LENGTH=16 * 1024 * 1024  # Ограничение размера запроса
+    MAX_CONTENT_LENGTH=16 * 1024 * 1024
 )
 
-# Имитация базы данных с блюдами
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(BASE_DIR, 'menu.json'), 'r', encoding='utf-8') as f:
     MENU = json.load(f)
 
-
 def find_dish(dish_id):
     return next((dish for dish in MENU if dish.get("id") == dish_id), None)
 
-
 def get_cart():
     return session.setdefault('cart', [])
-
 
 def save_cart(cart):
     session['cart'] = cart
     session.modified = True
 
-
 @app.route('/')
 def home():
     return render_template('index.html', dishes=MENU)
 
-
 @app.route('/order', methods=['POST'])
 def order_item():
-    # Маршрут для добавления в корзину без CSRF защиты, только если вы уверены в безопасности
     dish_id = int(request.form.get('dish_id', -1))
     dish = find_dish(dish_id)
     if not dish:
@@ -65,13 +56,11 @@ def order_item():
     save_cart(cart)
     return redirect(url_for('home'))
 
-
 @app.route('/basket')
 def basket_view():
     cart = get_cart()
     total = sum(entry['dish']['price'] * entry['quantity'] for entry in cart)
     return render_template('cart.html', cart=cart, total=total)
-
 
 @app.route('/change/<int:item_index>', methods=['POST'])
 def change_item(item_index):
@@ -99,31 +88,24 @@ def change_item(item_index):
     save_cart(cart)
     return {'status': 'ok'}
 
-
-@app.route('/checkout', methods=['POST'])
+@app.route('/checkout', methods=['GET', 'POST'])
 def do_checkout():
-    # Убираем метод GET, разрешаем только POST для безопасного изменения данных
     if request.method == 'POST':
         addr = request.form.get('address')
         phone = request.form.get('phone')
 
-        # Валидация данных
         if not addr or len(addr) < 5:
             return render_template('checkout.html', error="Некорректный адрес")
         if not phone or not phone.replace('+', '').isdigit():
             return render_template('checkout.html', error="Некорректный телефон")
 
-        # Сохраняем информацию о заказе в сессии
         session['order_info'] = {'address': addr, 'phone': phone}
         return redirect(url_for('confirmation'))
 
-    # Возвращаем форму только через POST
     return render_template('checkout.html')
-
 
 @app.route('/confirmation')
 def confirmation():
-    # Данные о заказе
     info = session.get('order_info')
     if not info:
         return redirect(url_for('do_checkout'))
@@ -131,7 +113,6 @@ def confirmation():
     expected_time = (datetime.now() + timedelta(minutes=40)).strftime('%H:%M')
     return render_template('confirm.html', address=info['address'],
                            phone=info['phone'], delivery_time=expected_time)
-
 
 if __name__ == '__main__':
     app.run(debug=os.getenv('FLASK_DEBUG', 'false').lower() == 'true')
