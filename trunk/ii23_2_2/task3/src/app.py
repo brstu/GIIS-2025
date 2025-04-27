@@ -88,25 +88,22 @@ def change_item(item_index):
     save_cart(cart)
     return {'status': 'ok'}
 
-@app.route('/checkout', methods=['GET', 'POST'])
-def do_checkout():
-    if request.method == 'GET':
-        return render_template('checkout.html')
+@app.route('/checkout', methods=['GET'])
+def checkout_form():
+    return render_template('checkout.html')
 
-    if request.method == 'POST':
-        addr = request.form.get('address')
-        phone = request.form.get('phone')
+@app.route('/checkout', methods=['POST'])
+def checkout_submit():
+    addr = request.form.get('address')
+    phone = request.form.get('phone')
 
-        if not addr or len(addr) < 5:
-            return render_template('checkout.html', error="Некорректный адрес")
-        if not phone or not phone.replace('+', '').isdigit():
-            return render_template('checkout.html', error="Некорректный телефон")
+    if not addr or len(addr) < 5:
+        return render_template('checkout.html', error="Некорректный адрес")
+    if not phone or not phone.replace('+', '').isdigit():
+        return render_template('checkout.html', error="Некорректный телефон")
 
-        session['order_info'] = {'address': addr, 'phone': phone}
-        return redirect(url_for('confirmation'))
-
-    abort(405)
-
+    session['order_info'] = {'address': addr, 'phone': phone}
+    return redirect(url_for('confirmation'))
 
 @app.route('/confirmation')
 def confirmation():
