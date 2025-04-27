@@ -12,8 +12,8 @@
     </header>
 
     <div class="checkout-page">
-        <form class="checkout-form" method="POST">
-            {{ csrf_token() }}
+        <form class="checkout-form" method="POST" action="{{ url_for('do_checkout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <h2>Введите данные для доставки</h2>
             
             {% if error %}
@@ -21,17 +21,17 @@
             {% endif %}
 
             <label for="address">Адрес доставки</label>
-            <input type="text" id="address" name="address" value="{{ request.form['address'] if request.method == 'POST' else '' }}" required>
+            <input type="text" id="address" name="address" value="{{ request.form.get('address', '') }}" required>
 
             <label for="phone">Номер телефона</label>
-            <input type="tel" id="phone" name="phone" value="{{ request.form['phone'] if request.method == 'POST' else '' }}" required>
+            <input type="tel" id="phone" name="phone" value="{{ request.form.get('phone', '') }}" required>
 
             <input type="submit" value="Подтвердить заказ">
         </form>
 
         <div class="checkout-footer">
             <p>Все данные будут использоваться только для доставки.</p>
-            <a href="/cart" class="cart-status">Вернуться в корзину</a>
+            <a href="/basket" class="cart-status">Вернуться в корзину</a>
         </div>
     </div>
 </body>
