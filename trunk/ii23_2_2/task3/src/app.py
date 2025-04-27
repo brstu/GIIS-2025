@@ -90,6 +90,9 @@ def change_item(item_index):
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def do_checkout():
+    if request.method == 'GET':
+        return render_template('checkout.html')
+
     if request.method == 'POST':
         addr = request.form.get('address')
         phone = request.form.get('phone')
@@ -102,7 +105,8 @@ def do_checkout():
         session['order_info'] = {'address': addr, 'phone': phone}
         return redirect(url_for('confirmation'))
 
-    return render_template('checkout.html')
+    abort(405)
+
 
 @app.route('/confirmation')
 def confirmation():
