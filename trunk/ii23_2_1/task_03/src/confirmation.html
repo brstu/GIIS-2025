@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подтверждение бронирования | ЖД Билеты 2025</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --dark-blue: #0a1f3d;
+            --accent-blue: #1a4b8c;
+            --hover-blue: #0d3a7a;
+            --light-blue: #e6f0fa;
+            --gold: #ffd700;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f9fa;
+            position: relative;
+            color: #333;
+            padding-bottom: 20px;
+        }
+
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(10, 31, 61, 0.7), rgba(10, 31, 61, 0.9)),
+                        url('https://images.unsplash.com/photo-1678811263784-cd356050fd21?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+            z-index: -1;
+            animation:
+                gradientShift 15s ease infinite alternate,
+                subtleFadeIn 2s ease-out;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        @keyframes subtleFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .top-bar {
+            background: rgba(10, 31, 61, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 0;
+            width: 100%;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            animation:
+                slideDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+                headerGlow 3s ease-in-out infinite alternate;
+            transform: translateY(-100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes slideDown {
+            to { transform: translateY(0); }
+        }
+
+        @keyframes headerGlow {
+            from { box-shadow: 0 4px 20px rgba(26, 75, 140, 0.3); }
+            to { box-shadow: 0 4px 30px rgba(26, 75, 140, 0.6); }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            color: var(--gold);
+            font-size: 2rem;
+            margin-right: 0.8rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .logo-text {
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #fff, var(--light-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .user-menu a {
+            white-space: nowrap;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .user-menu a:hover {
+            color: var(--gold);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1rem;
+            width: 100%;
+            margin-top: 80px;
+            animation: contentAppear 1s ease-out 0.3s both;
+            opacity: 0;
+        }
+
+        @keyframes contentAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .confirmation-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .section-title {
+            color: var(--dark-blue);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--accent-blue), transparent);
+            border-radius: 3px;
+            animation: titleUnderline 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleUnderline {
+            0% { width: 0%; left: 50%; }
+            100% { width: 100%; left: 0; }
+        }
+
+        .train-info {
+            background: var(--light-blue);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--accent-blue);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .train-info-title {
+            color: var(--dark-blue);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.3rem;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--dark-blue);
+            font-size: 1.1rem;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        .form-title {
+            color: var(--dark-blue);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-blue);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 12px 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.1);
+        }
+
+        .seat-selection {
+            margin-top: 2rem;
+        }
+
+        .seat-type-card {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .seat-type-card:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 5px 15px rgba(26, 75, 140, 0.1);
+        }
+
+        .seat-type-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .seat-type-title {
+            font-weight: 600;
+            color: var(--dark-blue);
+            margin: 0;
+        }
+
+        .seat-type-count {
+            margin-left: auto;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        .seat-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .seat-number {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .seat-number:hover {
+            background: #e0e0e0;
+        }
+
+        .seat-number.selected {
+            background: var(--accent-blue);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, var(--accent-blue), var(--hover-blue));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            width: 100%;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .btn-confirm:hover {
+            background: linear-gradient(135deg, var(--hover-blue), var(--accent-blue));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 75, 140, 0.3);
+        }
+
+        .footer {
+            background: rgba(10, 31, 61, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1.5rem 1rem;
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-title {
+            color: var(--light-blue);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.4s ease;
+        }
+
+        .footer-title:hover::after {
+            width: 80px;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.6rem;
+            transition: all 0.3s ease;
+            padding-left: 0;
+            border-left: 2px solid transparent;
+            padding: 0.2rem 0 0.2rem 1rem;
+        }
+
+        .footer-link:hover {
+            color: white;
+            padding-left: 1.2rem;
+            border-left: 2px solid var(--gold);
+            transform: translateX(5px);
+        }
+
+        .footer-link i {
+            margin-right: 8px;
+            transition: margin-right 0.3s ease;
+        }
+
+        .footer-link:hover i {
+            margin-right: 12px;
+            color: var(--gold);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            background: transparent !important;
+            width: auto;
+            height: auto;
+            border-radius: 0;
+        }
+
+        .social-icon:hover {
+            color: var(--gold);
+            transform: translateY(-3px) scale(1.1);
+            background: transparent !important;
+            box-shadow: none;
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .confirmation-card {
+                padding: 2rem 1.5rem;
+                border-radius: 15px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-section, .train-info {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-image"></div>
+
+    <header class="top-bar">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="{{ url_for('index') }}" class="logo text-decoration-none">
+                    <i class="bi bi-train-front logo-icon"></i>
+                    <span class="logo-text fs-4">ЖД Билеты</span>
+                </a>
+                <nav class="user-menu">
+                    <a href="{{ url_for('profile') }}" class="position-relative">
+                        <i class="bi bi-person-circle me-2"></i>
+                        <span>Личный кабинет</span>
+                    </a>
+                    <a href="#" class="position-relative">
+                        <i class="bi bi-heart me-2"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="#">
+                        <i class="bi bi-question-circle me-2"></i>
+                        <span>Помощь</span>
+                    </a>
+                </nav>
+                <button class="btn btn-outline-light d-md-none">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="confirmation-card">
+                <h2 class="section-title">Подтверждение бронирования</h2>
+
+                <div class="train-info">
+                    <h4 class="train-info-title">
+                        <i class="bi bi-train-front"></i> Информация о поезде
+                    </h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Поезд</div>
+                            <div class="info-value">№{{ train.id }} "{{ train.name }}"</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Маршрут</div>
+                            <div class="info-value">{{ from_city }} → {{ to_city }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Дата</div>
+                            <div class="info-value">{{ travel_date }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Отправление</div>
+                            <div class="info-value">{{ train.departure }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Прибытие</div>
+                            <div class="info-value">{{ train.arrival }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Время в пути</div>
+                            <div class="info-value">
+                                {% set dep = train.departure.split(' ') %}
+                                {% set arr = train.arrival.split(' ') %}
+                                {{ calculate_trip_duration(dep[1], arr[1]) }}
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Стоимость</div>
+                            <div class="info-value">{{ train.price }} Br</div>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="{{ url_for('book') }}" method="POST" class="form-section" autocomplete="off">
+                    <input type="hidden" name="train_id" value="{{ train.id }}">
+
+                    <h4 class="form-title">
+                        <i class="bi bi-person"></i> Данные пассажира
+                    </h4>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="passenger_name" class="form-label">ФИО пассажира</label>
+                                <input type="text" class="form-control" id="passenger_name" name="passenger_name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="passenger_email" class="form-label">Электронная почта</label>
+                                <input type="email" class="form-control" id="passenger_email" name="passenger_email" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="seat-selection">
+                        <h4 class="form-title">
+                            <i class="bi bi-ticket-perforated"></i> Выбор места
+                        </h4>
+
+                        {% set carriage_type = "Плацкарт" %}
+                        {% set seats = train.seats[carriage_type] %}
+                        {% set free_seats = seats|selectattr('occupied', 'equalto', false)|list %}
+                        <div class="seat-type-card">
+                            <div class="seat-type-header">
+                                <h5 class="seat-type-title">
+                                    <i class="bi bi-train-car"></i> {{ carriage_type }}
+                                </h5>
+                                <span class="seat-type-count">{{ free_seats|length }} мест</span>
+                            </div>
+
+                            <div class="seat-selection-content">
+                                <input type="hidden" name="carriage_type" value="{{ carriage_type }}" required>
+                                <div class="seat-numbers">
+                                    {% for seat in free_seats %}
+                                    <div class="seat-number"
+                                         onclick="selectSeat(this, '{{ carriage_type }}', {{ seat.number }})">
+                                        {{ seat.number }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <input type="hidden" name="seat_number" id="seat_number_{{ carriage_type }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-confirm">
+                        <i class="bi bi-check-circle"></i> Подтвердить бронирование
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 footer-section">
+                    <h5 class="footer-title">О компании</h5>
+                    <a href="#" class="footer-link"><i class="bi bi-building"></i>О нас</a>
+                    <a href="#" class="footer-link"><i class="bi bi-geo-alt"></i>Контакты</a>
+                    <a href="#" class="footer-link"><i class="bi bi-people"></i>Вакансии</a>
+                </div>
+                <div class="col-md-4 footer-section">
+                    <h5 class="footer-title">Информация</h5>
+                    <a href="#" class="footer-link"><i class="bi bi-journal-text"></i>Правила бронирования</a>
+                    <a href="#" class="footer-link"><i class="bi bi-arrow-counterclockwise"></i>Возврат билетов</a>
+                    <a href="#" class="footer-link"><i class="bi bi-question-circle"></i>Частые вопросы</a>
+                </div>
+                <div class="col-md-4 footer-section">
+                    <h5 class="footer-title">Контакты</h5>
+                    <a href="tel:+78001234567" class="footer-link"><i class="bi bi-telephone"></i>+375 (29) 123-45-67</a>
+                    <a href="mailto:info@zdtickets.ru" class="footer-link"><i class="bi bi-envelope"></i>info@zdtickets.by</a>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="bi bi-telegram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 ЖД Билеты. Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function selectSeat(element, carriageType, seatNumber) {
+            // Remove selection from all seats
+            document.querySelectorAll('.seat-number.selected').forEach(seat => {
+                seat.classList.remove('selected');
+            });
+
+            // Select clicked seat
+            element.classList.add('selected');
+
+            // Set the seat number in the hidden input
+            document.getElementById(`seat_number_${carriageType}`).value = seatNumber;
+        }
+
+        // Предотвращаем проблемы с кнопкой "Назад" в браузере
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+
+        // Очищаем данные формы при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            if (performance.navigation.type === 2) {
+                // Страница загружена после нажатия "Назад"
+                window.location.reload();
+            }
+
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
