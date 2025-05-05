@@ -8,7 +8,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or generate_password_hash(os.urandom(24).hex())
+secret = os.environ.get('SECRET_KEY')
+if not secret:
+    raise RuntimeError("SECRET_KEY must be set in environment for production.")
+app.config['SECRET_KEY'] = secret
 app.config['WTF_CSRF_TIME_LIMIT'] = 3600
 app.config['WTF_CSRF_SSL_STRICT'] = True
 
@@ -87,29 +90,36 @@ def search_results():
     return render_template('search_results.html', trains=filtered_trains)
 
 # Выбор места и оформление билета
-@app.route('/book/<int:train_id>', methods=['GET', 'POST'])
-def book_ticket(train_id):
+# Показ формы бронирования (GET)
+@app.route('/book/<int:train_id>', methods=['GET'])
+def show_booking_form(train_id):
+    train = next((t for t in trains if t['id'] == train_id), None)
+    if not train:
+        flash('Поезд не найден', 'error')
+        return redirect(url_for('home'))
+    return render_template('book_ticket.html', train=train)
+
+# Обработка бронирования (POST)
+@app.route('/book/<int:train_id>', methods=['POST'])
+def process_booking(train_id):
     train = next((t for t in trains if t['id'] == train_id), None)
     if not train:
         flash('Поезд не найден', 'error')
         return redirect(url_for('home'))
 
-    if request.method == 'GET':
-        return render_template('book_ticket.html', train=train)
-
-    # POST handling
     passenger_name = request.form.get('passenger_name')
     passenger_email = request.form.get('passenger_email')
     seat = request.form.get('seat')
 
     if not passenger_name or not passenger_email or not seat:
         flash('Пожалуйста, заполните все поля', 'error')
-        return redirect(url_for('book_ticket', train_id=train_id))
+        return redirect(url_for('show_booking_form', train_id=train_id))
 
     if seat not in train['available_seats']:
         flash('Выбранное место недоступно', 'error')
-        return redirect(url_for('book_ticket', train_id=train_id))
+        return redirect(url_for('show_booking_form', train_id=train_id))
 
+    # Удаление места из доступных
     train['available_seats'].remove(seat)
 
     ticket = {
