@@ -94,36 +94,37 @@ def book_ticket(train_id):
         flash('Поезд не найден', 'error')
         return redirect(url_for('home'))
 
-    if request.method == 'POST':
-        passenger_name = request.form.get('passenger_name')
-        passenger_email = request.form.get('passenger_email')
-        seat = request.form.get('seat')
+    if request.method == 'GET':
+        return render_template('book_ticket.html', train=train)
 
-        if not passenger_name or not passenger_email or not seat:
-            flash('Пожалуйста, заполните все поля', 'error')
-            return redirect(url_for('book_ticket', train_id=train_id))
+    # POST handling
+    passenger_name = request.form.get('passenger_name')
+    passenger_email = request.form.get('passenger_email')
+    seat = request.form.get('seat')
 
-        if seat not in train['available_seats']:
-            flash('Выбранное место недоступно', 'error')
-            return redirect(url_for('book_ticket', train_id=train_id))
+    if not passenger_name or not passenger_email or not seat:
+        flash('Пожалуйста, заполните все поля', 'error')
+        return redirect(url_for('book_ticket', train_id=train_id))
 
-        # Удаление места из доступных
-        train['available_seats'].remove(seat)
+    if seat not in train['available_seats']:
+        flash('Выбранное место недоступно', 'error')
+        return redirect(url_for('book_ticket', train_id=train_id))
 
-        ticket = {
-            'id': len(tickets) + 1,
-            'train_id': train['id'],
-            'train_number': train['number'],
-            'from_city': train['from_city'],
-            'to_city': train['to_city'],
-            'seat': seat,
-            'passenger_name': passenger_name,
-            'passenger_email': passenger_email
-        }
-        tickets.append(ticket)
-        return redirect(url_for('confirmation', ticket_id=ticket['id']))
+    train['available_seats'].remove(seat)
 
-    return render_template('book_ticket.html', train=train)
+    ticket = {
+        'id': len(tickets) + 1,
+        'train_id': train['id'],
+        'train_number': train['number'],
+        'from_city': train['from_city'],
+        'to_city': train['to_city'],
+        'seat': seat,
+        'passenger_name': passenger_name,
+        'passenger_email': passenger_email
+    }
+    tickets.append(ticket)
+    return redirect(url_for('confirmation', ticket_id=ticket['id']))
+
 
 # Подтверждение покупки
 @app.route('/confirmation/<int:ticket_id>')
