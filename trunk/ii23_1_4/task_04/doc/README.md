@@ -32,6 +32,8 @@ import copy
 import heapq
 import json
 import os
+import secrets
+
 
 BOARD_SIZE = 4
 TILE_SIZE = 100
@@ -124,7 +126,7 @@ class PuzzleGame:
         for _ in range(self.mix_count):
             i, j = self.empty
             dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-            random.shuffle(dirs)
+            dirs = sorted(dirs, key=lambda x: secrets.randbelow(1000))
             for dx, dy in dirs:
                 ni, nj = i + dx, j + dy
                 if 0 <= ni < BOARD_SIZE and 0 <= nj < BOARD_SIZE:
@@ -272,6 +274,7 @@ def choose_difficulty():
 
 if __name__ == "__main__":
     choose_difficulty()
+
 ```
 ## Результаты работы
 
