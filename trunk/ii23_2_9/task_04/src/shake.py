@@ -234,8 +234,8 @@ class Food:
         for piece in other_food:
             food_cords.append((piece.x, piece.y))
         while not collision:
-            x, y = randrange(CELL_SIZE, WIDTH - CELL_SIZE, CELL_SIZE), \
-                   randrange(CELL_SIZE, HEIGHT - CELL_SIZE, CELL_SIZE)
+            x, y = randrange(CELL_SIZE, WIDTH - CELL_SIZE, CELL_SIZE), \    # nosec B311 # noqa: S311
+                   randrange(CELL_SIZE, HEIGHT - CELL_SIZE, CELL_SIZE)      # nosec B311 # noqa: S311
             if (x, y) not in snake.body \
                     and (x, y) not in portal_cords \
                     and (x, y) not in food_cords \
