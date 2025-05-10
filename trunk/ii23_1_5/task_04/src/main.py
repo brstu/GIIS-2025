@@ -3,6 +3,7 @@ import random
 import os
 import math
 import time
+from secrets import randbelow  # Используем secrets для более безопасного генератора случайных чисел
 
 # --- Константы ---
 WIDTH, HEIGHT = 800, 600
@@ -80,7 +81,7 @@ class Enemy(pygame.sprite.Sprite):
         self.special = special
         self.direction = 1
         self.speed = 1 + wave * 0.2
-        self.amplitude = random.randint(10, 25)
+        self.amplitude = randbelow(16) + 10  # Замена random.randint
         self.frequency = random.uniform(0.002, 0.007)
         self.time_offset = random.uniform(0, math.pi * 2)
 
@@ -135,7 +136,7 @@ def spawn_wave(all_sprites, enemies, wave_number):
         for col in range(cols):
             x = start_x + col * spacing_x
             y = start_y + row * spacing_y
-            special = random.random() < 0.1
+            special = randbelow(10) == 0  # Замена random.random() < 0.1
             enemy = Enemy(x, y, special, wave_number)
             enemies.add(enemy)
             all_sprites.add(enemy)
@@ -191,7 +192,7 @@ def main():
                 for hit in hits:
                     bullet.kill()
                     score += 10
-                    if random.random() < 0.2:
+                    if randbelow(5) == 0:  # Замена random.random() < 0.2
                         bonuses.add(hit.drop_bonus())
                     if len(enemies) == 0:
                         wave += 1
