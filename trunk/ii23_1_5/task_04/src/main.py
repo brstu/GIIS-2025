@@ -3,7 +3,7 @@ import random
 import os
 import math
 import time
-from secrets import randbelow  # Используем secrets для более безопасного генератора случайных чисел
+from secrets import randbelow, choise
 
 # --- Константы ---
 WIDTH, HEIGHT = 800, 600
@@ -95,7 +95,7 @@ class Enemy(pygame.sprite.Sprite):
             self.direction *= -1
 
     def drop_bonus(self):
-        bonus_type = random.choice(['shield', 'double'])
+        bonus_type = choice(['shield', 'double'])
         return Bonus(self.rect.centerx, self.rect.centery, bonus_type)
 
 class Bullet(pygame.sprite.Sprite):
