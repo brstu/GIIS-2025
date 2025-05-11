@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Бронирование - {{ hotel.name }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Бронирование: {{ hotel.name }}</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST" class="needs-validation" novalidate>
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <label for="guest_name" class="form-label">Ваше имя</label>
+                                <input type="text" class="form-control" id="guest_name" name="guest_name" required>
+                                <div class="invalid-feedback">
+                                    Пожалуйста, введите ваше имя
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="guest_email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="guest_email" name="guest_email" required>
+                                <div class="invalid-feedback">
+                                    Пожалуйста, введите корректный email
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="room_type" class="form-label">Тип номера</label>
+                            <select class="form-select" id="room_type" name="room_type" required>
+                                <option value="" selected disabled>Выберите тип номера</option>
+                                {% for room in hotel.rooms %}
+                                <option value="{{ room.type }}">{{ room.type }} - {{ room.price }} ₽/ночь</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">
+                                Пожалуйста, выберите тип номера
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <label for="check_in" class="form-label">Дата заселения</label>
+                                <input type="date" class="form-control" id="check_in" name="check_in" required>
+                                <div class="invalid-feedback">
+                                    Пожалуйста, выберите дату
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nights" class="form-label">Количество ночей</label>
+                                <input type="number" class="form-control" id="nights" name="nights" min="1" value="1" required>
+                                <div class="invalid-feedback">
+                                    Минимальное количество - 1 ночь
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('hotel_detail', hotel_id=hotel.id) }}" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-left"></i> Назад
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Подтвердить бронирование
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Валидация формы
+(function () {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
+{% endblock %}

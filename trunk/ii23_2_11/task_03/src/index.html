@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>ЖД Билеты</title>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="#" onclick="showPage('home')">Главная</a>
+            <a href="#" onclick="showPage('account')">Личный кабинет</a>
+        </div>
+        
+        <!-- Главная страница -->
+        <div id="home" class="page" style="display: block;">
+            <div class="search-form">
+                <h1>Поиск ж/д билетов</h1>
+                <div class="input-group">
+                    <label>Откуда</label>
+                    <input type="text" id="from" placeholder="Москва" value="Москва">
+                </div>
+                <div class="input-group">
+                    <label>Куда</label>
+                    <input type="text" id="to" placeholder="Санкт-Петербург" value="Санкт-Петербург">
+                </div>
+                <div class="input-group">
+                    <label>Дата отправления</label>
+                    <input type="date" id="date" value="2023-12-15">
+                </div>
+                <button onclick="searchTrains()">Найти билеты</button>
+            </div>
+        </div>
+        
+        <!-- Результаты поиска -->
+        <div id="results" class="page">
+            <h2>Результаты поиска: <span id="search-title"></span></h2>
+            
+            <div class="train-card" onclick="selectTrain(1)" onKeyDown="handleTrainKeyDown(event, 1)" tabindex="0">
+                <h3>Поезд №755</h3>
+                <p>07:00 — 11:30 (4ч 30м)</p>
+                <p>30 byn</p>
+                <button>Выбрать места</button>
+            </div>
+            
+            <div class="train-card" onclick="selectTrain(2)" onKeyDown="handleTrainKeyDown(event, 2)" tabindex="0">
+                <h3>Электричка №17</h3>
+                <p>12:30 — 17:45 (5ч 15м)</p>
+                <p>22 byn</p>
+                <button>Выбрать места</button>
+            </div>
+            
+            <button onclick="showPage('home')">Назад</button>
+        </div>
+        
+        <!-- Выбор мест -->
+        <div id="seats" class="page">
+            <h2>Поезд №753, <span id="train-date"></span></h2>
+            <p>07:00 — 11:30 (4ч 30м)</p>
+            
+            <div class="wagon-type" onKeyDown="handleWagonKeyDown(event)" tabindex="0">
+                <h3>Вагон 5: Плацкарт</h3>
+                <div class="seat-map">
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">11</div>
+                    <div class="seat booked" tabindex="0">12</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">13</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">14</div>
+                    <div class="seat booked" tabindex="0">15</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">16</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">17</div>
+                    <div class="seat booked" tabindex="0">18</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">19</div>
+                    <div class="seat available" onclick="selectSeat(this)" onKeyDown="handleSeatKeyDown(event, this)" tabindex="0">20</div>
+                </div>
+            </div>
+            
+            <button onclick="proceedToCheckout()">Продолжить</button>
+            <button onclick="showPage('results')">Назад</button>
+        </div>
+        
+        <!-- Оформление заказа -->
+        <div id="checkout" class="page">
+            <h2>Оформление билета</h2>
+            
+            <div class="passenger-form">
+                <input type="text" placeholder="Фамилия" id="lastname" value="Иванов">
+                <input type="text" placeholder="Имя" id="firstname" value="Иван">
+                <input type="text" placeholder="Отчество" id="middlename" value="Иванович">
+                <input type="text" placeholder="Паспорт" id="passport" value="1234 567890">
+            </div>
+            
+            <div class="order-summary">
+                <h3>Ваш заказ:</h3>
+                <p id="order-train">Поезд №753, 15 декабря 2023, 07:00</p>
+                <p id="order-seat">Место: -</p>
+                <p>Сумма: <span id="order-price">2 500</span> ₽</p>
+            </div>
+            
+            <button onclick="confirmOrder()">Оплатить</button>
+            <button onclick="showPage('seats')">Назад</button>
+        </div>
+        
+        <!-- Страница успешного оформления -->
+        <div id="success" class="page">
+            <div class="success-page">
+                <div class="success-icon">✓</div>
+                <h2>Билет успешно оформлен!</h2>
+                <p>Номер вашего заказа: <strong id="order-id"></strong></p>
+                <p>Билет сохранен в вашем личном кабинете.</p>
+                <button onclick="showPage('account')">Перейти в личный кабинет</button>
+                <button onclick="showPage('home')">На главную</button>
+            </div>
+        </div>
+        
+        <!-- Личный кабинет -->
+        <div id="account" class="page">
+            <h2>Личный кабинет</h2>
+            
+            <div class="trip-history">
+                <h3>История поездок</h3>
+                <div id="no-trips" style="display: block;">
+                    <p>У вас пока нет поездок</p>
+                </div>
+                <div id="trip-list" style="display: none;">
+                    <!-- Здесь будут отображаться поездки -->
+                </div>
+            </div>
+            
+            <button onclick="showPage('home')">На главную</button>
+        </div>
+    </div>
+    <script src="js/script.js"></script> 
+</body>
+</html>

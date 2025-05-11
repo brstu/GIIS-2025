@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Поиск билетов{% endblock %}
+
+{% block content %}
+<div class="hero mb-5">
+    <div class="container">
+        <h1 class="display-4">Поиск ЖД билетов</h1>
+        <p class="lead">Выберите направление и дату поездки</p>
+        <form method="get" action="{{ url_for('search_results') }}" class="row g-3 justify-content-center">
+            <div class="col-md-3">
+                <input type="text" name="from_city" class="form-control" placeholder="Откуда" required>
+            </div>
+            <div class="col-md-3">
+                <input type="text" name="to_city" class="form-control" placeholder="Куда" required>
+            </div>
+            <div class="col-md-3">
+                <input type="date" name="date" class="form-control" required>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-light w-100" type="submit">Найти</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

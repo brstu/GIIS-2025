@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-center mb-5">Расписание курсов</h1>
+
+<div class="row">
+    {% for course, times in schedule.items() %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="schedule-card">
+            <h3 class="mb-3">{{ course }}</h3>
+            <div class="list-group">
+                {% for time in times %}
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <span>{{ time }}</span>
+                    <span class="badge bg-primary rounded-pill">Доступно</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="text-center mt-4">
+    <a href="/enroll" class="btn btn-primary btn-lg">
+        <i class="fas fa-pencil-alt me-2"></i>Записаться на курс
+    </a>
+</div>
+{% endblock %}

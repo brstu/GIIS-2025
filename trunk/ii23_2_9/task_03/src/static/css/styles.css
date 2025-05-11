@@ -1,0 +1,99 @@
+/* Общий фон и шрифты */
+body {
+    background: #f8f1e5; /* бежевый фон */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+main {
+    flex: 1;
+}
+
+/* Навигация */
+.navbar {
+    background-color: #a83232; /* насыщенный красный */
+}
+
+/* Карточки курсов */
+.card.course-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.card-img-top {
+    height: 180px;
+    object-fit: cover;
+}
+
+/* Расписание курсов */
+.schedule-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Форма записи */
+.form-container {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Подтверждение записи */
+.confirmation-box {
+    background: #fff;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Кнопки */
+.btn-primary {
+    background-color: #a83232; /* основной красный */
+    border-color: #a83232;
+}
+
+.btn-primary:hover {
+    background-color: #8c2828;
+    border-color: #8c2828;
+}
+
+.btn-success {
+    background-color: #d9733d;  /* теплый оттенок, хорошо сочетается с бежевым */
+    border-color: #d9733d;
+}
+
+.btn-success:hover {
+    background-color: #c06633;
+    border-color: #c06633;
+}
+
+/* Подвал */
+footer {
+    background-color: #a83232;
+}
+
+/* Соцсети */
+.social-links a {
+    transition: opacity 0.3s;
+}
+
+.social-links a:hover {
+    opacity: 0.7;
+    text-decoration: none;
+}

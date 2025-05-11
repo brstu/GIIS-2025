@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<div class="hero-section position-relative overflow-hidden mb-5">
+  <div class="parallax-bg" style="background-image: url('{{ url_for('static', filename='images/hero-bg.jpg') }}');"></div>
+  <div class="container position-relative py-5 text-white text-center">
+    <h1 class="display-4 fw-bold mb-4">Доставка вкуснейшей еды</h1>
+    <p class="lead mb-5">Быстро, вкусно и прямо к вашей двери!</p>
+    <a href="#menu" class="btn btn-primary btn-lg px-5 py-3 rounded-pill">
+      <i class="fas fa-arrow-down me-2"></i>Смотреть меню
+    </a>
+  </div>
+</div>
+
+<h2 class="mb-4">Наше меню</h2>
+<div class="row row-cols-1 row-cols-md-3 g-4" id="menu">
+  {% for dish in dishes %}
+  <div class="col">
+    <div class="card h-100 bg-dark text-white border-secondary">
+      <div class="card-img-container overflow-hidden">
+        <img src="{{ url_for('static', filename='images/' + dish.image) }}"
+             class="card-img-top scale-on-hover"
+             alt="{{ dish.name }}">
+        <div class="price-badge shadow">{{ dish.price }} ₽</div>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title fw-bold">{{ dish.name }}</h5>
+        <p class="card-text text-muted">{{ dish.description }}</p>
+      </div>
+      <div class="card-footer bg-transparent border-0">
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+          <input type="hidden" name="dish_id" value="{{ dish.id }}">
+          <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill add-to-cart-btn">
+            <i class="fas fa-cart-plus me-2"></i>В корзину
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

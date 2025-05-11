@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="confirmation-box text-center">
+    <div class="mb-4">
+        <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
+        <h1 class="mb-4">Вы успешно записались на курс!</h1>
+        <p>Здравствуйте, {{ name }}!</p>
+        <p>Вы записаны на курс <strong>{{ course }}</strong> в группе <strong>{{ time }}</strong>.</p>
+        <a href="/" class="btn btn-primary mt-4">Вернуться на главную</a>
+
+        <form action="{{ url_for('cancel_enrollment', index=enrollment_index) }}" method="GET">
+            <button type="submit" class="btn btn-danger mt-4">Отменить запись</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
