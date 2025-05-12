@@ -1,6 +1,6 @@
 import pygame
 import sys
-import random
+import secrets
 import math
 
 
@@ -279,7 +279,7 @@ if __name__ == "__main__":
             if not game_over and not paused and not win and event.type == ENEMY_SHOOT_EVENT:
                 shooters = [e for e in enemies if e['alive']]
                 if shooters:
-                    shooter = random.choice(shooters)
+                    shooter = secrets.choice(shooters)
                     bullet = enemy_bullet_img.get_rect()
                     bullet.centerx = shooter['rect'].centerx
                     bullet.top = shooter['rect'].bottom
@@ -326,8 +326,8 @@ if __name__ == "__main__":
                
                 boss_bonus_timer += 1
                 if boss_bonus_timer > 180:
-                    if random.random() < 0.2:
-                        btype = random.choice(BONUS_TYPES)
+                    if secrets.randbelow(100) < 20:
+                        btype = secrets.choice(BONUS_TYPES)
                         brect = pygame.Rect(boss_rect.centerx-12, boss_rect.bottom, 24, 24)
                         bonuses.append({'rect': brect, 'type': btype, 'timer': BONUS_TIME})
                     boss_bonus_timer = 0
@@ -357,8 +357,8 @@ if __name__ == "__main__":
                             score += 50
                             explosions.append({'rect': enemy['rect'].copy(), 'timer': EXPLOSION_TIME})
                             
-                            if random.random() < 0.5:
-                                btype = random.choice(BONUS_TYPES)
+                            if secrets.randbelow(100) < 50:
+                                btype = secrets.choice(BONUS_TYPES)
                                 brect = pygame.Rect(enemy['rect'].centerx-12, enemy['rect'].centery-12, 24, 24)
                                 bonuses.append({'rect': brect, 'type': btype, 'timer': BONUS_TIME})
                             break
@@ -410,8 +410,8 @@ if __name__ == "__main__":
                         score += 10
                         explosions.append({'rect': enemy['rect'].copy(), 'timer': EXPLOSION_TIME})
                         # шанс бонуса
-                        if random.random() < 0.2:
-                            btype = random.choice(BONUS_TYPES)
+                        if secrets.randbelow(100) < 20:
+                            btype = secrets.choice(BONUS_TYPES)
                             brect = pygame.Rect(enemy['rect'].centerx-12, enemy['rect'].centery-12, 24, 24)
                             bonuses.append({'rect': brect, 'type': btype, 'timer': BONUS_TIME})
                         break
