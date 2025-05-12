@@ -1,4 +1,4 @@
-import random
+import secrets
 import tkinter as tk
 from tkinter import messagebox
 
@@ -20,13 +20,16 @@ class Card:
 class Deck:
     def __init__(self):
         self.cards = [Card(rank, suit) for suit in suits for rank in ranks]
-        random.shuffle(self.cards)
+        self.shuffle_deck()
+
+    def shuffle_deck(self):
+        secrets.SystemRandom().shuffle(self.cards)
 
     def deal_card(self, high_only=False):
         if high_only:
             high_cards = [card for card in self.cards if card.value >= 10]
             if high_cards:
-                card = random.choice(high_cards)
+                card = secrets.choice(high_cards)
                 self.cards.remove(card)
                 return card
         return self.cards.pop()
