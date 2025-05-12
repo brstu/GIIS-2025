@@ -4,12 +4,10 @@ import sys
 from pygame import mixer
 import warnings
 
-# Инициализация Pygame
+# Инициализация Pygame и генератора случайных чисел
 pygame.init()
 mixer.init()
-
-# Инициализация генератора случайных чисел
-random.seed()  # Инициализируется системным временем
+random.seed()  # Явная инициализация генератора
 
 # Константы
 SCREEN_WIDTH = 800
@@ -37,7 +35,6 @@ try:
     coin_sound = mixer.Sound('coin.wav')
     achievement_sound = mixer.Sound('achievement.wav')
 except:
-    # Заглушки, если файлы не найдены
     jump_sound = mixer.Sound(buffer=bytearray(100))
     coin_sound = mixer.Sound(buffer=bytearray(100))
     achievement_sound = mixer.Sound(buffer=bytearray(100))
@@ -253,31 +250,36 @@ class Weather:
     def start_rain(self):
         self.is_raining = True
         self.rain_drops = [
-            [
-                random.randint(0, SCREEN_WIDTH),
-                random.randint(-50, 0),
-                random.uniform(2.0, 5.0),
-                random.uniform(1.0, 3.0)
-            ]
+            {
+                'x': random.uniform(0, SCREEN_WIDTH),
+                'y': random.uniform(-50, 0),
+                'speed': random.uniform(2.0, 5.0),
+                'width': random.uniform(1.0, 3.0)
+            }
             for _ in range(100)
         ]
 
     def update(self):
         if self.is_raining:
             for drop in self.rain_drops:
-                drop[1] += drop[2]
-                drop[0] += self.wind_strength
-                if drop[1] > SCREEN_HEIGHT:
-                    drop[1] = random.randint(-50, 0)
-                    drop[0] = random.randint(0, SCREEN_WIDTH)
+                drop['y'] += drop['speed']
+                drop['x'] += self.wind_strength
+                if drop['y'] > SCREEN_HEIGHT:
+                    drop.update({
+                        'y': random.uniform(-50, 0),
+                        'x': random.uniform(0, SCREEN_WIDTH)
+                    })
 
     def draw(self, surface):
         if self.is_raining:
             for drop in self.rain_drops:
-                pygame.draw.line(surface, (200, 200, 255, int(drop[3])),
-                                 (int(drop[0]), int(drop[1])),
-                                 (int(drop[0] + self.wind_strength * 5), int(drop[1] + drop[2] * 3)),
-                                 int(drop[3]))
+                pygame.draw.line(
+                    surface,
+                    (200, 200, 255, int(drop['width'])),
+                    (int(drop['x']), int(drop['y'])),
+                    (int(drop['x'] + self.wind_strength * 5), int(drop['y'] + drop['speed'] * 3)),
+                    int(drop['width'])
+                )
 
 class GameOverScreen:
     def __init__(self):
@@ -296,7 +298,7 @@ class GameOverScreen:
         pygame.draw.rect(surface, GREEN, self.restart_button)
         restart_text = self.font_small.render("Повторить", True, WHITE)
         surface.blit(restart_text, (self.restart_button.centerx - restart_text.get_width() // 2,
-                                    self.restart_button.centery - restart_text.get_height() // 2))
+                                  self.restart_button.centery - restart_text.get_height() // 2))
 
     def check_click(self, pos):
         return self.restart_button.collidepoint(pos)
@@ -341,8 +343,8 @@ def init_game():
 
     for _ in range(15):
         coin = Coin(
-            random.randint(50, SCREEN_WIDTH - 50),
-            random.randint(50, SCREEN_HEIGHT - 100)
+            x=random.randrange(50, SCREEN_WIDTH - 50),
+            y=random.randrange(50, SCREEN_HEIGHT - 100)
         )
         coins.add(coin)
         all_sprites.add(coin)
@@ -389,7 +391,8 @@ while running:
 
         if game_over or win:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                init_game()
+                if game_over_screen.check_click(event.pos) if game_over else True:
+                    init_game()
         else:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -421,8 +424,8 @@ while running:
 
             if random.uniform(0.0, 1.0) > 0.3:
                 coin = Coin(
-                    random.randint(50, SCREEN_WIDTH - 50),
-                    random.randint(50, SCREEN_HEIGHT - 100)
+                    x=random.randrange(50, SCREEN_WIDTH - 50),
+                    y=random.randrange(50, SCREEN_HEIGHT - 100)
                 )
                 coins.add(coin)
                 all_sprites.add(coin)
