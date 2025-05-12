@@ -32,6 +32,7 @@ Tetris
 быстрых очисток.    
 
 Игра
+
 ![](images/1.png)
 ![](images/2.png)
 
