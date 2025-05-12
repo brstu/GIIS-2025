@@ -1,5 +1,5 @@
 import pygame
-import random
+import secrets
 import time
 
 # --- Константы ---
@@ -51,12 +51,11 @@ class Snake:
         if not self.invincible and new_head in self.body:
             return False  # Game over
 
-        self.body.insert(0, new_head)  # Всегда добавляем голову
+        self.body.insert(0, new_head)
 
         if not self.grow:
-            self.body.pop()  # Обрезаем хвост, если не растем
+            self.body.pop()
         else:
-            # Если растем, оставляем хвост как есть, и сбрасываем флаг
             self.grow = False
 
         if self.invincible and time.time() > self.invincible_timer:
@@ -71,7 +70,6 @@ class Snake:
     def eat(self):
         self.grow = True
 
-    # В классе Snake — упрощаем draw (удаляем использование спрайтов)
     def draw(self, surface):
         for i, (x, y) in enumerate(self.body):
             rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
@@ -85,11 +83,10 @@ class Bonus:
         self.spawn()
 
     def spawn(self):
-        self.type = random.choice(self.types)
-        self.pos = (random.randint(0, COLS - 1), random.randint(0, ROWS - 1))
-        self.timer = time.time() + 10  # исчезает через 10 секунд
+        self.type = secrets.choice(self.types)
+        self.pos = (secrets.randbelow(COLS), secrets.randbelow(ROWS))
+        self.timer = time.time() + 10
 
-    # В классе Bonus — обновляем draw()
     def draw(self, surface):
         image = pygame.transform.scale(bonus_images[self.type], (CELL_SIZE, CELL_SIZE))
         surface.blit(image, (self.pos[0] * CELL_SIZE, self.pos[1] * CELL_SIZE))
@@ -97,10 +94,9 @@ class Bonus:
 
 class Portal:
     def __init__(self):
-        self.a = (random.randint(0, COLS - 1), random.randint(0, ROWS - 1))
-        self.b = (random.randint(0, COLS - 1), random.randint(0, ROWS - 1))
+        self.a = (secrets.randbelow(COLS), secrets.randbelow(ROWS))
+        self.b = (secrets.randbelow(COLS), secrets.randbelow(ROWS))
 
-    # В классе Portal — обновляем draw()
     def draw(self, surface):
         scaled = pygame.transform.scale(portal_image, (CELL_SIZE, CELL_SIZE))
         surface.blit(scaled, (self.a[0] * CELL_SIZE, self.a[1] * CELL_SIZE))
@@ -109,11 +105,12 @@ class Portal:
     def teleport(self, pos):
         return self.b if pos == self.a else self.a if pos == self.b else pos
 
+
 # --- Основной игровой цикл ---
 
 def main():
     snake = Snake()
-    food = (random.randint(0, COLS - 1), random.randint(0, ROWS - 1))
+    food = (secrets.randbelow(COLS), secrets.randbelow(ROWS))
     bonus = Bonus()
     portal = Portal()
 
@@ -151,8 +148,7 @@ def main():
         if snake.body[0] == food:
             snake.eat()
             score += 1
-            food = (random.randint(0, COLS - 1), random.randint(0, ROWS - 1))
-
+            food = (secrets.randbelow(COLS), secrets.randbelow(ROWS))
 
         # Бонус
         if snake.body[0] == bonus.pos:
