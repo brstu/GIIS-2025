@@ -23,7 +23,10 @@ class Deck:
         self.shuffle_deck()
 
     def shuffle_deck(self):
-        secrets.SystemRandom().shuffle(self.cards)
+        deck_length = len(self.cards)
+        for i in range(deck_length - 1, 0, -1):
+            j = secrets.randbelow(i + 1)
+            self.cards[i], self.cards[j] = self.cards[j], self.cards[i]
 
     def deal_card(self, high_only=False):
         if high_only:
