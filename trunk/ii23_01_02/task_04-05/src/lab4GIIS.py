@@ -1,5 +1,5 @@
 import pygame
-import random
+import secrets
 
 pygame.init()
 
@@ -40,8 +40,8 @@ font = pygame.font.Font(None, 36)
 clock = pygame.time.Clock()
 
 def new_piece():
-    shape = random.choice(SHAPES)
-    color = random.choice(COLORS)
+    shape = secrets.choice(SHAPES)  # Используйте secrets.choice вместо random.choice
+    color = secrets.choice(COLORS)   # Используйте secrets.choice вместо random.choice
     return {'shape': shape, 'color': color, 'x': GRID_WIDTH // 2 - len(shape[0]) // 2, 'y': 0}
 
 def check_collision(grid, piece, offset_x=0, offset_y=0):
@@ -146,12 +146,12 @@ def main():
                     last_clear_time = current_time
                     score += cleared_lines * 10 * combo_multiplier + combo_bonus
 
-                    if random.random() < 0.2:
+                    if secrets.randbits() < 0.2:
                         bonus_placed = False
                         attempts = 0
                         while not bonus_placed and attempts < 100:
-                            bonus_x = random.randint(0, GRID_WIDTH - 1)
-                            bonus_y = random.randint(0, GRID_HEIGHT - 1)
+                            bonus_x = secrets.randbelow(0, GRID_WIDTH - 1)
+                            bonus_y = secrets.randbelow(0, GRID_HEIGHT - 1)
                             if grid[bonus_y][bonus_x] is None:
                                 grid[bonus_y][bonus_x] = GOLD
                                 bonus_placed = True
