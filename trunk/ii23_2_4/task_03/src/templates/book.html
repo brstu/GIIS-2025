@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }} | Labyrinth</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Labyrinth</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Главная</a>
+            <a href="{{ url_for('profile') }}">Личный кабинет</a>
+        </nav>
+    </header>
+
+    <main class="book-page">
+        <div class="back-link">
+            <a href="{{ url_for('home') }}">← Назад</a>
+        </div>
+        
+        <div class="book-header">
+            <div class="book-cover-large" 
+                 style="background-image: url('{{ url_for('static', filename=book.cover) }}')">
+            </div>
+            <div class="book-meta">
+                <h1>{{ book.title }}</h1>
+                <p><strong>Автор:</strong> {{ book.author }}</p>
+                <p><strong>Жанр:</strong> {{ book.genre }}</p>
+                <p><strong>Год:</strong> {{ book.year }}</p>
+            </div>
+        </div>
+
+        <section class="reviews">
+    <h2>ОТЗЫВЫ ЧИТАТЕЛЕЙ</h2>
+    {% for review in book.reviews %}
+    <div class="review">
+        <div class="review-header">
+            <span class="review-author">{{ review.author }}</span>
+            <span class="review-rating">{{ review.rating }}</span>
+        </div>
+        <p class="review-text">{{ review.text }}</p>
+        <div class="review-date">{{ review.date }}</div>
+    </div>
+    {% endfor %}
+</section>
+    </main>
+</body>
+</html>

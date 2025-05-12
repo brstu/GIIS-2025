@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Подтверждение заказа</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="confirmation-header">
+        <h1>Подтверждение заказа</h1>
+        <a href="/" class="back-to-menu">Назад в меню</a>
+    </header>
+
+    <div class="confirmation-page">
+        <div class="confirmation-details">
+            <h2>Данные вашего заказа</h2>
+            <p><strong>Адрес доставки:</strong> {{ address }}</p>
+            <p><strong>Номер телефона:</strong> {{ phone }}</p>
+            <p><strong>Предполагаемое время доставки:</strong> {{ delivery_time }}</p>
+        </div>
+
+        <div class="confirmation-footer">
+            <p>Ваш заказ был успешно принят. Мы свяжемся с вами, чтобы подтвердить детали доставки.</p>
+            <a href="/" class="back-to-menu">Вернуться в меню</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Результаты поиска{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Доступные поезда по вашему маршруту</h2>
+
+{% if trains %}
+    <div class="list-group">
+        {% for train in trains %}
+        <div class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>Поезд №{{ train.number }}: {{ train.from_city }} → {{ train.to_city }}</h5>
+                    <p class="mb-1">Отправление: {{ train.departure_time }} — Прибытие: {{ train.arrival_time }}</p>
+                </div>
+                <a href="{{ url_for('book_ticket', train_id=train.id) }}" class="btn btn-primary">Выбрать места</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">По данному направлению ничего не найдено.</div>
+{% endif %}
+{% endblock %}

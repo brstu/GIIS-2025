@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль | Labyrinth</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roca+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Labyrinth</h1>
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/profile">Личный кабинет</a>
+        </nav>
+    </header>
+
+    <main class="profile-page">
+        <h2>ЛИЧНЫЙ КАБИНЕТ</h2>
+        <h3>ЗДРАВСТВУЙ, ДОРОГОЙ ЧИТАТЕЛЬ!</h3>
+
+        <div class="profile-stats">
+            <p><strong>ДНЕЙ АКТИВНОСТИ:</strong> 15</p>
+            <p><strong>ВСЕГО ИЗБРАННЫХ КНИГ:</strong> 8</p>
+            <p><strong>ВСЕГО ПРОЧИТАННЫХ КНИГ:</strong> 12</p>
+        </div>
+
+        <section class="favorites">
+            <h3>ИЗБРАННОЕ:</h3>
+            <div class="book-covers">
+                <div class="book-cover" style="background-image: url('{{ url_for('static', filename='images/covers/алиса_в_стране_чудес.jpg') }}')"></div>
+                <div class="book-cover" style="background-image: url('{{ url_for('static', filename='images/covers/джейн_остин.jpg') }}')"></div>
+                <!-- Другие обложки -->
+            </div>
+        </section>
+    </main>
+</body>
+</html>

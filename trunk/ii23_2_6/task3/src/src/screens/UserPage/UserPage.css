@@ -1,0 +1,59 @@
+.account-page {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+}
+
+.booking-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 10px;
+  padding: 10px;
+}
+
+.booking-card {
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  min-width: 30%;
+  max-width: 50%;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.booking-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.booking-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.booking-info h3 {
+  font-size: 20px;
+}
+
+.booking-info p {
+  display: flex;
+  justify-content: space-between;
+  color: #555;
+}
+
+.booking-info button {
+  margin-top: 10px;
+  color: #fff;
+  background-color: #00b894;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px;
+  border: 0;
+  border-radius: 10px;
+  outline: none;
+
+  cursor: pointer;
+}
