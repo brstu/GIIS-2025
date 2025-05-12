@@ -2,7 +2,7 @@ import pygame
 import random
 import sys
 from pygame import mixer
-import secrets  # Используем криптографически безопасный генератор
+import secrets
 
 # Инициализация Pygame
 pygame.init()
@@ -23,18 +23,23 @@ GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 SKY_WHITE = (255, 255, 255)
 
+_secure_random = secrets.SystemRandom()
+
 # Безопасные функции для генерации случайных чисел
 def secure_randint(a, b):
-    return secrets.SystemRandom().randint(a, b)
+    """Возвращает случайное целое число от a до b (включительно) с использованием безопасного генератора."""
+    return _secure_random.randint(a, b)
 
 def secure_randrange(a, b):
-    return secrets.SystemRandom().randrange(a, b)
+    """Возвращает случайное значение из диапазона [a, b) с использованием безопасного генератора."""
+    return _secure_random.randrange(a, b)
 
 def secure_uniform(a, b):
     return secrets.SystemRandom().uniform(a, b)
 
 def secure_choice(seq):
-    return secrets.SystemRandom().choice(seq)
+    """Безопасный выбор случайного элемента из последовательности."""
+    return _secure_random.choice(seq)
 
 # Создание окна
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
