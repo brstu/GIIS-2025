@@ -1,5 +1,5 @@
 import pygame
-import random
+import secrets
 import sys
 
 pygame.init()
