@@ -2,12 +2,11 @@ import pygame
 import random
 import sys
 from pygame import mixer
-import warnings
+import secrets  # Используем криптографически безопасный генератор
 
-# Инициализация Pygame и генератора случайных чисел
+# Инициализация Pygame
 pygame.init()
 mixer.init()
-random.seed()  # Явная инициализация генератора
 
 # Константы
 SCREEN_WIDTH = 800
@@ -23,6 +22,19 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 SKY_WHITE = (255, 255, 255)
+
+# Безопасные функции для генерации случайных чисел
+def secure_randint(a, b):
+    return secrets.SystemRandom().randint(a, b)
+
+def secure_randrange(a, b):
+    return secrets.SystemRandom().randrange(a, b)
+
+def secure_uniform(a, b):
+    return secrets.SystemRandom().uniform(a, b)
+
+def secure_choice(seq):
+    return secrets.SystemRandom().choice(seq)
 
 # Создание окна
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -251,10 +263,10 @@ class Weather:
         self.is_raining = True
         self.rain_drops = [
             {
-                'x': random.uniform(0, SCREEN_WIDTH),
-                'y': random.uniform(-50, 0),
-                'speed': random.uniform(2.0, 5.0),
-                'width': random.uniform(1.0, 3.0)
+                'x': secure_uniform(0, SCREEN_WIDTH),
+                'y': secure_uniform(-50, 0),
+                'speed': secure_uniform(2.0, 5.0),
+                'width': secure_uniform(1.0, 3.0)
             }
             for _ in range(100)
         ]
@@ -266,8 +278,8 @@ class Weather:
                 drop['x'] += self.wind_strength
                 if drop['y'] > SCREEN_HEIGHT:
                     drop.update({
-                        'y': random.uniform(-50, 0),
-                        'x': random.uniform(0, SCREEN_WIDTH)
+                        'y': secure_uniform(-50, 0),
+                        'x': secure_uniform(0, SCREEN_WIDTH)
                     })
 
     def draw(self, surface):
@@ -343,8 +355,8 @@ def init_game():
 
     for _ in range(15):
         coin = Coin(
-            x=random.randrange(50, SCREEN_WIDTH - 50),
-            y=random.randrange(50, SCREEN_HEIGHT - 100)
+            x=secure_randrange(50, SCREEN_WIDTH - 50),
+            y=secure_randrange(50, SCREEN_HEIGHT - 100)
         )
         coins.add(coin)
         all_sprites.add(coin)
@@ -399,7 +411,7 @@ while running:
                     player.jump()
                 if event.key == pygame.K_r:
                     weather.start_rain()
-                    weather.wind_strength = random.uniform(-1.0, 1.0)
+                    weather.wind_strength = secure_uniform(-1.0, 1.0)
 
     if not game_over and not win:
         all_sprites.update()
@@ -422,10 +434,10 @@ while running:
                 player.achievements.append("Да ты Жадина!")
                 achievement_sound.play()
 
-            if random.uniform(0.0, 1.0) > 0.3:
+            if secure_uniform(0.0, 1.0) > 0.3:
                 coin = Coin(
-                    x=random.randrange(50, SCREEN_WIDTH - 50),
-                    y=random.randrange(50, SCREEN_HEIGHT - 100)
+                    x=secure_randrange(50, SCREEN_WIDTH - 50),
+                    y=secure_randrange(50, SCREEN_HEIGHT - 100)
                 )
                 coins.add(coin)
                 all_sprites.add(coin)
