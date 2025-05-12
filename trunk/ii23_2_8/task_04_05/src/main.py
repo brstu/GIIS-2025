@@ -56,7 +56,7 @@ class Board:
         self._shuffle_until_playable()
 
     def random_gem(self):
-        return Gem(random.choice(GEM_SYMBOLS))
+        return Gem(secrets.choice(GEM_SYMBOLS))
 
     def in_bounds(self, x, y):
         return 0 <= x < GRID_SIZE and 0 <= y < GRID_SIZE
