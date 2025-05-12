@@ -146,7 +146,7 @@ def main():
                     last_clear_time = current_time
                     score += cleared_lines * 10 * combo_multiplier + combo_bonus
 
-                    if secrets.randbits() < 0.2:
+                    if secrets.randbelow(5) < 1:
                         bonus_placed = False
                         attempts = 0
                         while not bonus_placed and attempts < 100:
