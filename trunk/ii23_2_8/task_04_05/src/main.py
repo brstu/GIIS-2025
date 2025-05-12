@@ -143,7 +143,7 @@ class Board:
     def promote_specials(self, matches):
         for run in matches:
             if len(run) >= 4:
-                x, y = random.choice(run)
+                x, y = secrets.choice(run)
                 orientation = 'row' if all(y == yy for _, yy in run) else 'col'
                 gem = self.grid[y][x]
                 gem.special = orientation
