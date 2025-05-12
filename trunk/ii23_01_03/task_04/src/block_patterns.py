@@ -1,5 +1,5 @@
 from Block import Block
-from random import choice
+from secrets import choice
 from constants import colors, screen_width
 
 

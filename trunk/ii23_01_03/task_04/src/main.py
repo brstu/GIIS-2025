@@ -4,7 +4,7 @@ from Platform import Platform
 from Ball import Ball
 from block_patterns import patterns, choice
 from Bonus import Bonus
-from random import randint
+import secrets
 
 pg.init()
 pg.display.set_caption('Arcanoid')
@@ -69,7 +69,16 @@ def game(pattern: list):
     bonus_balls.clear()
     balls.clear()
     platform = Platform()
-    ball = Ball(randint(10, screen_width // 2 - 100), screen_height)
+    left = 10
+    left = 10
+    right = screen_width // 2 - 100
+    safe_right = max(left, right)
+    if safe_right > left:
+        start_x = left + secrets.randbelow(safe_right - left)
+    else:  # Если диапазон вырожденный
+        start_x = left
+
+    ball = Ball(start_x, screen_height)
     balls.append(ball)
     block_pattern = AssignBonuses(pattern.copy())
     clock = pg.time.Clock()

@@ -1,6 +1,6 @@
 from constants import screen_width, screen_height, screen
 import pygame as pg
-import random
+from secrets import choice
 
 
 class Ball:
@@ -9,7 +9,7 @@ class Ball:
         self.R = int(self.r * (2 ** 0.5))
         self.body = pg.Rect(x, y, 2 * self.r, 2 * self.r)
         self.center = self.body.x + self.r, self.body.y + self.r
-        self.dx = random.choice([-1, 1])
+        self.dx = choice([-1, 1])
         self.dy = -1
         self.speed = 6
 
