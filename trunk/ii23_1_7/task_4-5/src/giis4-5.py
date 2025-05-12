@@ -2,10 +2,14 @@ import pygame
 import random
 import sys
 from pygame import mixer
+import warnings
 
 # Инициализация Pygame
 pygame.init()
 mixer.init()
+
+# Инициализация генератора случайных чисел
+random.seed()  # Инициализируется системным временем
 
 # Константы
 SCREEN_WIDTH = 800
@@ -38,8 +42,6 @@ except:
     coin_sound = mixer.Sound(buffer=bytearray(100))
     achievement_sound = mixer.Sound(buffer=bytearray(100))
 
-
-# Класс для загрузки спрайтов
 class SpriteSheet:
     def __init__(self, filename):
         try:
@@ -56,17 +58,13 @@ class SpriteSheet:
                 frames.append(frame)
         return frames
 
-
 class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, is_moving=False):
         super().__init__()
         try:
-            # Пытаемся загрузить текстуру травы
             grass_img = pygame.image.load('trava.png').convert_alpha()
-            # Масштабируем текстуру под размер платформы
             self.image = pygame.transform.scale(grass_img, (width, height))
         except:
-            # Если файл не найден, используем зеленый цвет
             self.image = pygame.Surface((width, height))
             self.image.fill(GREEN)
 
@@ -80,32 +78,27 @@ class Platform(pygame.sprite.Sprite):
 
     def update(self):
         if self.is_moving:
-            # Сохраняем предыдущую позицию для корректного определения коллизий
             prev_x = self.rect.x
             self.rect.x += self.speed * self.direction
 
-            # Проверяем коллизии с игроком при движении платформы
             if pygame.sprite.collide_rect(self, player):
-                if self.rect.x > prev_x:  # Движение вправо
+                if self.rect.x > prev_x:
                     player.rect.right = self.rect.left
-                elif self.rect.x < prev_x:  # Движение влево
+                elif self.rect.x < prev_x:
                     player.rect.left = self.rect.right
 
             if self.rect.right > SCREEN_WIDTH or self.rect.left < 0:
                 self.direction *= -1
 
-
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.spritesheet = SpriteSheet('player_spritesheet.png')
-        self.prev_y = 0  # Добавляем переменную для хранения предыдущей позиции по Y
+        self.prev_y = 0
 
-        # Загрузка анимаций
         run_right = self.spritesheet.get_frames(92, 119, rows=1, cols=8)
         run_left = [pygame.transform.flip(frame, True, False) for frame in run_right]
 
-        # Обработка спрайтов
         self.run_right = [self._process_sprite(pygame.transform.scale(frame, (50, 70))) for frame in run_right]
         self.run_left = [self._process_sprite(pygame.transform.scale(frame, (50, 70))) for frame in run_left]
 
@@ -127,17 +120,12 @@ class Player(pygame.sprite.Sprite):
         self.facing_right = True
         self.last_update = pygame.time.get_ticks()
         self.mask = pygame.mask.from_surface(self.image)
-        self.can_pass_through = False  # Может ли игрок проходить сквозь платформы снизу
+        self.can_pass_through = False
 
     def _process_sprite(self, image):
-        """Удаляет белый фон и обрезает лишнюю нижнюю часть"""
         image = image.copy()
-
-        # Обрезка снизу (например, на 10 пикселей)
         cropped_rect = pygame.Rect(0, 0, image.get_width(), image.get_height() - 10)
         image = image.subsurface(cropped_rect).copy()
-
-        # Удаление белого фона
         pixels = pygame.PixelArray(image)
         pixels.replace((255, 255, 255, 255), (0, 0, 0, 0))
         del pixels
@@ -145,34 +133,26 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         now = pygame.time.get_ticks()
-
-        # Получаем состояние клавиш здесь
         keys = pygame.key.get_pressed()
-
-        # Сохраняем предыдущую позицию
         self.prev_y = self.rect.y
 
-        # Гравитация
         self.velocity_y += GRAVITY
         self.rect.y += self.velocity_y
 
-        # Проверка коллизий с платформами
         self.on_ground = False
         platform_hits = pygame.sprite.spritecollide(self, platforms, False)
 
         for platform in platform_hits:
-            # Определяем направление движения относительно платформы
-            if self.velocity_y > 0:  # Падаем вниз
+            if self.velocity_y > 0:
                 if self.rect.bottom > platform.rect.top and self.prev_y + self.rect.height <= platform.rect.top:
                     self.rect.bottom = platform.rect.top
                     self.velocity_y = 0
                     self.on_ground = True
-            elif self.velocity_y < 0:  # Движемся вверх
+            elif self.velocity_y < 0:
                 if self.rect.top < platform.rect.bottom and self.prev_y >= platform.rect.bottom:
                     self.rect.top = platform.rect.bottom
                     self.velocity_y = 0
 
-        # Управление
         if keys[pygame.K_LEFT]:
             self.rect.x -= PLAYER_SPEED
             self.facing_right = False
@@ -189,14 +169,12 @@ class Player(pygame.sprite.Sprite):
         if not self.on_ground:
             self.current_anim = self.jump_right if self.facing_right else self.jump_left
 
-        # Анимация
         if now - self.last_update > 100:
             self.last_update = now
             self.anim_frame = (self.anim_frame + self.anim_speed) % len(self.current_anim)
             self.image = self.current_anim[int(self.anim_frame)]
             self.mask = pygame.mask.from_surface(self.image)
 
-        # Границы экрана
         if self.rect.left < 0:
             self.rect.left = 0
         if self.rect.right > SCREEN_WIDTH:
@@ -206,7 +184,7 @@ class Player(pygame.sprite.Sprite):
         if self.on_ground:
             self.velocity_y = JUMP_STRENGTH
             jump_sound.play()
-# Класс монетки
+
 class Coin(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -229,8 +207,6 @@ class Coin(pygame.sprite.Sprite):
             self.image = self.frames[int(self.anim_frame)]
             self.mask = pygame.mask.from_surface(self.image)
 
-
-# Класс врага
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -268,8 +244,6 @@ class Enemy(pygame.sprite.Sprite):
             self.image = self.frames[int(self.anim_frame)]
             self.mask = pygame.mask.from_surface(self.image)
 
-
-# Класс погоды
 class Weather:
     def __init__(self):
         self.rain_drops = []
@@ -278,13 +252,15 @@ class Weather:
 
     def start_rain(self):
         self.is_raining = True
-        for _ in range(100):
-            self.rain_drops.append([
+        self.rain_drops = [
+            [
                 random.randint(0, SCREEN_WIDTH),
                 random.randint(-50, 0),
-                random.randint(2, 5),
-                random.randint(1, 3)
-            ])
+                random.uniform(2.0, 5.0),
+                random.uniform(1.0, 3.0)
+            ]
+            for _ in range(100)
+        ]
 
     def update(self):
         if self.is_raining:
@@ -298,13 +274,11 @@ class Weather:
     def draw(self, surface):
         if self.is_raining:
             for drop in self.rain_drops:
-                pygame.draw.line(surface, (200, 200, 255, drop[3]),
-                                 (drop[0], drop[1]),
-                                 (drop[0] + self.wind_strength * 5, drop[1] + drop[2] * 3),
-                                 drop[3])
+                pygame.draw.line(surface, (200, 200, 255, int(drop[3])),
+                                 (int(drop[0]), int(drop[1])),
+                                 (int(drop[0] + self.wind_strength * 5), int(drop[1] + drop[2] * 3)),
+                                 int(drop[3]))
 
-
-# Класс экрана поражения
 class GameOverScreen:
     def __init__(self):
         self.font_large = pygame.font.SysFont('Arial', 72)
@@ -327,20 +301,17 @@ class GameOverScreen:
     def check_click(self, pos):
         return self.restart_button.collidepoint(pos)
 
-# Новый класс Door (добавить перед инициализацией игры)
 class Door(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.image = pygame.Surface((40, 70))
-        self.image.fill((139, 69, 19))  # Коричневый цвет
-        pygame.draw.rect(self.image, (160, 82, 45), (10, 10, 20, 50))  # Дверь
+        self.image.fill((139, 69, 19))
+        pygame.draw.rect(self.image, (160, 82, 45), (10, 10, 20, 50))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.mask = pygame.mask.from_surface(self.image)
 
-
-# Модифицированная функция init_game
 def init_game():
     global all_sprites, platforms, coins, enemies, player, weather, game_over, door, win
 
@@ -349,16 +320,13 @@ def init_game():
     coins = pygame.sprite.Group()
     enemies = pygame.sprite.Group()
 
-    # Игрок
     player = Player()
     all_sprites.add(player)
 
-    # Платформы
     ground = Platform(0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50)
     platforms.add(ground)
     all_sprites.add(ground)
 
-    # Добавляем платформы
     platform_positions = [
         (100, 450, 100, 20),
         (300, 400, 100, 20),
@@ -371,30 +339,27 @@ def init_game():
         platforms.add(p)
         all_sprites.add(p)
 
-    # Монетки
-    for i in range(15):  # Увеличили количество монеток
-        coin = Coin(random.randint(50, SCREEN_WIDTH - 50), random.randint(50, SCREEN_HEIGHT - 100))
+    for _ in range(15):
+        coin = Coin(
+            random.randint(50, SCREEN_WIDTH - 50),
+            random.randint(50, SCREEN_HEIGHT - 100)
+        )
         coins.add(coin)
         all_sprites.add(coin)
 
-    # Враги
     enemy = Enemy(200, SCREEN_HEIGHT - 80)
     enemies.add(enemy)
     all_sprites.add(enemy)
 
-    # Погода
     weather = Weather()
 
-    # Дверь (пока невидима)
     door = Door(SCREEN_WIDTH - 100, SCREEN_HEIGHT - 120)
-    door.image.set_alpha(0)  # Сделать дверь прозрачной
+    door.image.set_alpha(0)
     all_sprites.add(door)
 
     game_over = False
     win = False
 
-
-# Класс экрана победы (добавить после GameOverScreen)
 class WinScreen:
     def __init__(self):
         self.font_large = pygame.font.SysFont('Arial', 72)
@@ -411,16 +376,13 @@ class WinScreen:
         score_text = self.font_small.render(f"Собрано монет: {player.score}", True, WHITE)
         surface.blit(score_text, (SCREEN_WIDTH // 2 - score_text.get_width() // 2, SCREEN_HEIGHT // 2))
 
-
 # Инициализация игры
 init_game()
 game_over_screen = GameOverScreen()
 win_screen = WinScreen()
 
-# Главный игровой цикл (модифицировать условие и добавить проверку победы)
 running = True
 while running:
-    # Обработка событий
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -434,53 +396,47 @@ while running:
                     player.jump()
                 if event.key == pygame.K_r:
                     weather.start_rain()
-                    weather.wind_strength = random.uniform(-1, 1)
+                    weather.wind_strength = random.uniform(-1.0, 1.0)
 
     if not game_over and not win:
-        # Обновление
         all_sprites.update()
         weather.update()
 
-        # Коллизии с монетками
         hits = pygame.sprite.spritecollide(player, coins, True, pygame.sprite.collide_mask)
         for hit in hits:
             player.score += 1
             coin_sound.play()
 
-            # Проверка на 20 монет (дверь)
             if player.score >= 20 and door.image.get_alpha() == 0:
-                door.image.set_alpha(255)  # Показать дверь
+                door.image.set_alpha(255)
                 achievement_sound.play()
 
-            # Проверка на 5 монет (первая ачивка)
             if player.score >= 5 and "Начинающий сборщик монет" not in player.achievements:
                 player.achievements.append("Начинающий сборщик монет")
                 achievement_sound.play()
 
-            # Проверка на 30 монет
             if player.score >= 30 and "Да ты Жадина!" not in player.achievements:
                 player.achievements.append("Да ты Жадина!")
                 achievement_sound.play()
 
-            if random.random() > 0.3:
-                coin = Coin(random.randint(50, SCREEN_WIDTH - 50), random.randint(50, SCREEN_HEIGHT - 100))
+            if random.uniform(0.0, 1.0) > 0.3:
+                coin = Coin(
+                    random.randint(50, SCREEN_WIDTH - 50),
+                    random.randint(50, SCREEN_HEIGHT - 100)
+                )
                 coins.add(coin)
                 all_sprites.add(coin)
 
-        # Коллизии с врагами
         if pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_mask):
             game_over = True
 
-        # Коллизии с дверью (проверка победы)
         if door.image.get_alpha() == 255 and pygame.sprite.collide_mask(player, door):
             win = True
 
-        # Отрисовка
         screen.fill(SKY_WHITE)
         weather.draw(screen)
         all_sprites.draw(screen)
 
-        # Интерфейс
         font = pygame.font.SysFont('Arial', 24)
         score_text = font.render(f"Монеты: {player.score}/20", True, BLACK)
         screen.blit(score_text, (10, 10))
@@ -489,13 +445,11 @@ while running:
             ach_text = font.render("Ачивки: " + ", ".join(player.achievements), True, BLACK)
             screen.blit(ach_text, (10, 40))
     elif game_over:
-        # Отрисовка экрана поражения
         screen.fill(SKY_WHITE)
         weather.draw(screen)
         all_sprites.draw(screen)
         game_over_screen.draw(screen)
     elif win:
-        # Отрисовка экрана победы
         screen.fill(SKY_WHITE)
         weather.draw(screen)
         all_sprites.draw(screen)
