@@ -21,7 +21,7 @@
 
 | №  | ФИО                            | Directory name               |#1  | #2 | #3  | #4 | #5 | #6 |
 |----|--------------------------------|------------------------------|----|-----|----|-----|----|----|
-|1|Ежевский Егор|[ii23_01_08](./trunk/ii23_2_1)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$||$${\color{lightgreen}5}$$|||
+|1|Ежевский Егор|[ii23_01_08](./trunk/ii23_2_1)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightblue}4}$$|$${\color{lightgreen}5}$$|||
 |2|Макаревич Кирилл|[ii23_2_2](./trunk/ii23_2_2)|$${\color{red}3}$$|$${\color{red}3}$$|$${\color{lightblue}4}$$|$${\color{lightgreen}5}$$|||
 |3|Макаревич Никита|[ii23_2_3](./trunk/ii23_2_3)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||||
 |4|Маслакова Ксения|[ii23_2_4](./trunk/ii23_2_4)|$${\color{lightblue}4}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||
@@ -31,7 +31,7 @@
 |8|Палто Елена|[ii23_2_8](./trunk/ii23_2_8)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||
 |9|Романюк Алексей|[ii23_2_8](./trunk/ii23_2_9)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||
 |10|Скварнюк Давид|[ii23_2_10](./trunk/ii23_2_10)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||
-|11|Тутина Елизавета|[ii23_2_11](./trunk/ii23_2_11)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$||||
+|11|Тутина Елизавета|[ii23_2_11](./trunk/ii23_2_11)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||
 |12|Швороб Владислав|[ii23_2_12](./trunk/ii23_2_12)|$${\color{lightgreen}5}$$|$${\color{lightblue}4}$$|$${\color{lightgreen}5}$$||||
 
 ### Итоговая
@@ -49,7 +49,7 @@
 
 | №  | ФИО                            |#1  | #2 | #3  | #4  | avg|
 |----|--------------------------------|----|-----|----|-----|----|
-|1|Ежевский Егор|10|10||10|$${\color{lightgreen}9}$$|
+|1|Ежевский Егор|10|10|9|10|$${\color{lightgreen}10}$$|
 |2|Макаревич Кирилл|6|6|9|10|$${\color{lightgreen}8}$$|
 |3|Макаревич Никита|10|10|||$${\color{lightgreen}5}$$|
 |4|Маслакова Ксения|9|10|10|10|$${\color{lightgreen}10}$$|
@@ -59,5 +59,5 @@
 |8|Палто Елена|10|10|10|10|$${\color{lightgreen}10}$$|
 |9|Романюк Алексей|10|10|10|10|$${\color{lightgreen}10}$$|
 |10|Скварнюк Давид|10|10|10|10|$${\color{lightgreen}10}$$|
-|11|Тутина Елизавета|10|10|10||$${\color{lightgreen}8}$$|
+|11|Тутина Елизавета|10|10|10|10|$${\color{lightgreen}10}$$|
 |12|Швороб Владислав|10|9|10||$${\color{lightgreen}8}$$|
