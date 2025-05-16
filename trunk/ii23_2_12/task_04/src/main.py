@@ -80,6 +80,8 @@ class Tetris:
         self.next_piece = self.get_new_piece()
         self.record = self.load_record()
         self.screen = None
+        self.rng = random.SystemRandom()
+
 
     def load_record(self):
         if os.path.exists(RECORD_FILE):
@@ -92,10 +94,12 @@ class Tetris:
             open(RECORD_FILE, 'w').write(str(self.score))
 
     def get_new_piece(self):
-        if random.random() < 0.05:
+        # 5% шанс получить бонусный блок
+        if self.rng.random() < 0.05:
             return Tetromino(BONUS_ROT, GRID_WIDTH // 2, 0)
-        shape = random.choice(SHAPES_ROT)
-        return Tetromino(shape, GRID_WIDTH // 2 - len(shape[0]) // 2, 0)
+        # обычный выбор из наборов фигур
+        shape = self.rng.choice(SHAPES_ROT)
+        return Tetromino(shape, GRID_WIDTH // 2, 0)
 
     def intersects(self):
         for i, row in enumerate(self.current.image()):
