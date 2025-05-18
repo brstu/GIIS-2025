@@ -1,0 +1,102 @@
+body {
+    font-family: 'Georgia', serif;
+    background-color: #f9f2e4;
+    color: #3e2f2f;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #b89b72;
+    padding: 1rem;
+    color: white;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.nav-brand {
+    font-size: 1.8rem;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.card {
+    background-color: #fffdf7;
+    border: 1px solid #c9bca3;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 2px 2px 6px rgba(160, 132, 97, 0.2);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.01);
+}
+
+.card-img-top {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #4d392d;
+}
+
+.card-text {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+}
+
+.card-footer {
+    background-color: #f2e7d8;
+    padding: 0.75rem;
+    text-align: right;
+}
+
+.btn-primary {
+    background-color: #a67c52;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.btn-primary:hover {
+    background-color: #8e6744;
+}
