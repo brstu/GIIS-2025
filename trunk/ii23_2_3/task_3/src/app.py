@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime
+from flask_wtf import CSRFProtect
 
 app = Flask(__name__)
+app.secret_key = 'your-secret-key'  # Required for CSRF
+csrf = CSRFProtect(app)
+
 
 # Пример списка товаров
 items = [
@@ -65,4 +69,4 @@ def request_success():
     return render_template('request_success.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
