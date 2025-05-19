@@ -27,7 +27,7 @@
 |4|Маслакова Ксения|[ii23_2_4](./trunk/ii23_2_4)|$${\color{lightblue}4}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||
 |5|Медведь Павел|[ii23_2_5](./trunk/ii23_2_5)|$${\color{lightgreen}5}$$|$${\color{lightblue}4}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||
 |6|Новицкая Вероника|[ii23_2_6](./trunk/ii23_2_6)|$${\color{lightblue}4}$$|$${\color{red}3}$$|$${\color{lightgreen}5}$$||||
-|7|Осипова Алла|[ii23_2_7](./trunk/ii23_2_7)|$${\color{lightblue}4}$$|$${\color{red}3}$$||$${\color{lightgreen}5}$$|||
+|7|Осипова Алла|[ii23_2_7](./trunk/ii23_2_7)|$${\color{lightblue}4}$$|$${\color{red}3}$$|$${\color{lightblue}4}$$|$${\color{lightgreen}5}$$|||
 |8|Палто Елена|[ii23_2_8](./trunk/ii23_2_8)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||
 |9|Романюк Алексей|[ii23_2_8](./trunk/ii23_2_9)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||
 |10|Скварнюк Давид|[ii23_2_10](./trunk/ii23_2_10)|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|$${\color{lightgreen}5}$$|||
@@ -55,7 +55,7 @@
 |4|Маслакова Ксения|9|10|10|10|$${\color{lightgreen}10}$$|
 |5|Медведь Павел|10|9|10|10|$${\color{lightgreen}10}$$|
 |6|Новицкая Вероника|9|6|10|8|$${\color{lightgreen}8}$$|
-|7|Осипова Алла|9|6||10|$${\color{lightgreen}7}$$|
+|7|Осипова Алла|9|6|9|10|$${\color{lightgreen}9}$$|
 |8|Палто Елена|10|10|10|10|$${\color{lightgreen}10}$$|
 |9|Романюк Алексей|10|10|10|10|$${\color{lightgreen}10}$$|
 |10|Скварнюк Давид|10|10|10|10|$${\color{lightgreen}10}$$|
