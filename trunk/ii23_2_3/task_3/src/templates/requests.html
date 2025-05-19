@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Мои запросы | Baraholka{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Мои запросы</h1>
+
+    {% if requests %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Дата запроса</th>
+                <th>Статус</th>
+                <th>Цена</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in requests %}
+            <tr>
+                <td>{{ req.item }}</td>
+                <td>{{ req.date_from }} - {{ req.date_to }}</td>
+                <td>{{ req.status }}</td>
+                <td>{{ req.price }} ₽</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Вы ещё не оставляли запросов.</p>
+    {% endif %}
+</div>
+{% endblock %}
