@@ -1,5 +1,5 @@
 import pygame
-import random
+import secrets
 
 pygame.init()
 
@@ -90,7 +90,7 @@ class PowerUp:
     TYPES = ['bigger', 'smaller', 'faster', 'catch', 'multi']
 
     def __init__(self, x, y):
-        self.type = random.choice(PowerUp.TYPES)
+        self.type = secrets.choice(PowerUp.TYPES)
         self.rect = pygame.Rect(x, y, 20, 20)
         self.dy = 2
 
@@ -154,7 +154,7 @@ while running:
                 ball.follow_paddle(paddle)
             elif ball.rect.colliderect(paddle.rect):
                 ball.bounce()
-
+    counter = 0
     # Столкновения с кирпичами
     for brick in bricks:
         if brick.alive:
@@ -162,7 +162,8 @@ while running:
                 if ball.rect.colliderect(brick.rect):
                     brick.alive = False
                     ball.bounce()
-                    if random.random() < 0.3:
+                    counter += 1
+                    if counter % 2 == 0:
                         powerups.append(PowerUp(brick.rect.centerx, brick.rect.centery))
 
     # Обработка бонусов
@@ -180,7 +181,7 @@ while running:
             elif pu.type == 'multi':
                 new_balls = []
                 for _ in range(2):
-                    new_ball = Ball(paddle.rect.centerx, paddle.rect.top - 15, dx=random.choice([-4, 4]), dy=-4)
+                    new_ball = Ball(paddle.rect.centerx, paddle.rect.top - 15, dx=secrets.choice([-4, 4]), dy=-4)
                     new_balls.append(new_ball)
                 balls.extend(new_balls)
             powerups.remove(pu)
